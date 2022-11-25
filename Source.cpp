@@ -3,6 +3,7 @@
 #include<fstream>
 #include<cstdlib>
 #include<ctime>
+#include<stdio.h>
 using namespace std;
 
 struct date {
@@ -36,7 +37,7 @@ struct ve
 	string HangBay;
 	string MaChuyenBay;
 	string TenKhachHang;
-	int cccd;
+	long cccd;
 	string SoGhe;
 	string DiemDi;
 	string DiemDen;
@@ -98,28 +99,22 @@ int TongSoLuongVe(LIST ds)
 
 void Nhap(LIST& ds, NODE *p)
 {
-
+	cin.ignore();
 	cout << "\nNhap hang may bay: ";
 	getline(cin, p->data.HangBay);
-	cin.ignore();
 	cout << "\nNhap ma chuyen bay: ";
 	getline(cin, p->data.MaChuyenBay);
-	cin.ignore();
 	cout << "\nNhap ten hanh khach: ";
-	getline(cin, p->data.TenKhachHang);
-	cin.ignore();
-	cout << "\nNhap CMND hoac CCCD: ";
+	getline(cin, p->data.TenKhachHang,'\n');
+	cout << "\nNhap CMND hoac CCCD: ";	
 	cin >> p->data.cccd;
-	//cin.ignore();
+	cin.ignore();
 	cout << "\nNhap vi tri ghe: ";
 	getline(cin, p->data.SoGhe);
-	cin.ignore();
 	cout << "\nNhap Noi khoi hanh: ";
 	getline(cin, p->data.DiemDi);
-	cin.ignore();
 	cout << "\nNhap noi den: ";
 	getline(cin, p->data.DiemDen);
-	cin.ignore();
 	p->data.cua = rand() % (10 - 1 + 1) + 1;
 	cout << "\nNhap thoi gian dat ve: ";
 	cout << "\nNhap ngay: ";
@@ -128,11 +123,12 @@ void Nhap(LIST& ds, NODE *p)
 	cin >> p->data.ThoiGianKhoiHanh.mon;
 	cout << "\nNhap nam: ";
 	cin >> p->data.ThoiGianKhoiHanh.year;
+	fflush(stdin);
 	p->data.ThoiGianKhoiHanh.hour = rand() % (24 - 00 + 0) + 0;
-	/*do {
+	do {
 		p->data.ThoiGianKhoiHanh.min = rand() % (60 - 0 + 0) + 0;
 	} while (p->data.ThoiGianKhoiHanh.min % 10 != 0);
-	p->data.ThoiGianBay = rand() % (24);*/
+	p->data.ThoiGianBay = rand() % (24);
 }
 
 //Them
@@ -326,12 +322,16 @@ void Doc1Ve(ifstream& filein, VE& v)
 
 void DocDanhSachVe(ifstream& filein, LIST& ds)
 {
+	if (filein.is_open())
+		cout << "Mo file thanh cong" << endl;
+	else
+		cout << "Mo file that bai" << endl;
 	while (!filein.eof())
 	{
 		VE v;
 		Doc1Ve(filein, v);
 		NODE* p=TaoNode(v);
-		ThemCuoi(ds, p);
+		ThemDau(ds, p);
 	}
 }
 
@@ -352,10 +352,13 @@ void Xuat(VE v)
 void XuatDanhSachVe(LIST ds)
 {
 	int dem = 1;
-	for (NODE* i = ds.Head;i != NULL;i = i->Next)
+	NODE* i = ds.Head;
+	while (i != NULL)
 	{
-		cout <<"\n"<< dem++ << ".";
+		cout << "\n" << dem << ". ";
 		Xuat(i->data);
+		i = i->Next;
+		dem++;
 	}
 }
 void GiaiPhongVungNho(LIST& ds)
@@ -374,13 +377,14 @@ void menu(LIST& ds)
 {
 
 	int luachon;
-	while (69)
+	while (true)
 	{
 		system("cls");
 		cout << "\n\n\t\t========== MENU ==========";
 		cout << "\n\t1. Dat ve";
 		cout << "\n\t2. In cac ve da dat";
 		cout << "\n\t3. Huy ve";
+		cout << "\n\t4. Doc danh sach ve tu file";
 		cout << "\n\t0. Thoat";
 		cout << "\n\n\t\t========== END ==========";
 
@@ -403,7 +407,20 @@ void menu(LIST& ds)
 			XuatDanhSachVe(ds);
 			system("pause");
 		}
-		
+		else if (luachon == 3)
+		{
+			int x;
+			cout << "Nhap Thu vu ve can huy ";
+			cin >> x;
+			XoaViTriK(ds, x);
+		}
+		else if (luachon == 4)
+		{
+			ifstream filein;
+			filein.open("danhsachve.txt", ios::in);
+			DocDanhSachVe(filein, ds);
+			XuatDanhSachVe(ds);
+		}
 		else
 		{
 			system("pause");

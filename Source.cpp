@@ -77,7 +77,7 @@ NODE* TaoNode(VE x)
 	NODE* p = new NODE;
 	if (p == NULL)
 	{
-		cout << "Khoi tao ve khong thanh cong";
+		cout << "Dat ve khong thanh cong";
 	}
 	else
 	{
@@ -316,22 +316,27 @@ void Doc1Ve(ifstream& filein, VE& v)
 	filein.ignore();
 	filein.seekg(1, 1);
 	DocDate(filein, v.ThoiGianKhoiHanh);
-	filein.seekg(1, 1);
+	filein.seekg(1, 2);
 	filein >> v.ThoiGianBay;
 }
 
 void DocDanhSachVe(ifstream& filein, LIST& ds)
 {
-	if (filein.is_open())
-		cout << "Mo file thanh cong" << endl;
-	else
-		cout << "Mo file that bai" << endl;
-	while (!filein.eof())
+	if (!filein)
 	{
-		VE v;
-		Doc1Ve(filein, v);
-		NODE* p=TaoNode(v);
-		ThemDau(ds, p);
+		cout << "Tai du lieu khong thanh cong!";
+	}
+	else
+	{
+		while (!filein.eof())
+		{
+			VE v;
+			Doc1Ve(filein, v);
+			NODE* p = TaoNode(v);
+			ThemCuoi(ds, p);
+			if (filein.eof())
+				cout << "\nHet file";
+		}
 	}
 }
 
@@ -361,6 +366,9 @@ void XuatDanhSachVe(LIST ds)
 		dem++;
 	}
 }
+
+
+
 void GiaiPhongVungNho(LIST& ds)
 {
 	NODE* k = new NODE;
@@ -379,12 +387,13 @@ void menu(LIST& ds)
 	int luachon;
 	while (true)
 	{
-		system("cls");
+		//system("cls");
 		cout << "\n\n\t\t========== MENU ==========";
 		cout << "\n\t1. Dat ve";
 		cout << "\n\t2. In cac ve da dat";
 		cout << "\n\t3. Huy ve";
 		cout << "\n\t4. Doc danh sach ve tu file";
+		cout << "\n\t5. Sap xep danh sach ve";
 		cout << "\n\t0. Thoat";
 		cout << "\n\n\t\t========== END ==========";
 
@@ -417,9 +426,14 @@ void menu(LIST& ds)
 		else if (luachon == 4)
 		{
 			ifstream filein;
-			filein.open("danhsachve.txt", ios::in);
+			filein.open("input.txt", ios::in);
 			DocDanhSachVe(filein, ds);
 			XuatDanhSachVe(ds);
+			filein.close();
+		}
+		else if (luachon == 5)
+		{
+			QuickSort(ds);
 		}
 		else
 		{
@@ -432,9 +446,17 @@ void menu(LIST& ds)
 
 int main()
 {
+	/*LIST ds;
+	VE v;
+	KhoiTaoDanhSach(ds);
+	ifstream filein;
+	filein.open("input.txt", ios::in);
+	DocDanhSachVe(filein, ds);
+	XuatDanhSachVe(ds);
+	filein.close();*/
 	LIST ds;
 	KhoiTaoDanhSach(ds);
 	menu(ds);
-
+	system("pause");
 	return 0;
 }

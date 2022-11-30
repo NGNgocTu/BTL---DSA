@@ -18,12 +18,17 @@ struct day
 class airlines
 {
 protected:
-    int id;
+    int id, TotalLine;
     string name;
 
 public:
-    airlines(int id, string name);
+    airlines(int id = -1, string name = "", int TotalLine = 0);
     void setId(int id) { this->id = id; }
     void setName(string name) { this->name = name; }
+    void setTotal(int TotalLine) { this->TotalLine = TotalLine; }
+    int getId() const { return this->id; }
+    string getName() const { return this->name; }
+    int getTotalLine() const { return this->TotalLine; }
     virtual void print();
+    void printNameOfAirline();
 };

@@ -1,16 +1,16 @@
+#pragma once
 #include "Trip.h"
 
 class ticket : public trip
 {
 protected:
-    day date;
-    time boardingTime;
-    int price;
+    string nameOfClient, idOfClient, phone, seatOfClient;
 
 public:
-    ticket(int id, string name, int idLine, string from, string to, int idTrip, time departureTime, int seat, day date, time boardingTime, int price);
-    void setDate(day date) { this->date = date; }
-    void setBoardingTime(time boardingTime) { this->boardingTime = boardingTime; }
-    void setPrice(int price) { this->price = price; }
+    ticket(int id = -1, string name = "", int totalLine = 0, int idLine = 0, int totalTrip = 0, string from = "", string to = "", int idTrip = 0, day date = date1, time departureTime = time1, int price = 0, int seat = 0, string nameOfClient = "", string idOfClient = "", string phone = "", string seatOfClient = "");
+    void setNameOfClient(string nameOfClient) { this->nameOfClient = nameOfClient; }
+    void setIdOfClient(string idOfClient) { this->idOfClient = idOfClient; }
+    void setPhone(string phone) { this->phone = phone; }
+    void setSeatOfClient(string seatOfClient) { this->seatOfClient = seatOfClient; }
     virtual void print();
 };

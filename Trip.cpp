@@ -1,6 +1,6 @@
 #include "Trip.h"
 
-trip::trip(int id, string name, int idLine, string from, string to, int idTrip, time departureTime, int seat) : lines(id, name, idLine, from, to)
+trip::trip(int id, string name, int totalLine, int idLine, int totalTrip, string from, string to, int idTrip, day date, time departureTime, int price, int seat) : lines(id, name, totalLine, idLine, totalTrip, from, to)
 {
     this->idTrip = idTrip;
     this->departureTime = departureTime;
@@ -11,6 +11,25 @@ void trip::print()
 {
     this->lines::print();
     cout << "Id of trip: " << this->idTrip;
-    cout << "\nDeparture time: " << this->departureTime.hour << ":" << this->departureTime.minute;
-    cout << "\nTotal of seat: " << this->seat << "\n";
+    cout << "\nDeparture date: ";
+    this->date.d < 10 ? cout << "0" << this->date.d << "/" : cout << this->date.d << "/";
+    this->date.m < 10 ? cout << "0" << this->date.m << "/" : cout << this->date.m << "/";
+    cout << this->date.y;
+    cout << "\nDeparture time: ";
+    this->departureTime.hour < 10 ? cout << "0" << this->departureTime.hour << ":" : cout << this->departureTime.hour << ":";
+    this->departureTime.minute < 10 ? cout << "0" << this->departureTime.minute : cout << this->departureTime.minute;
+    cout << "\nThe price is: " << this->price;
+    cout << "\nTotal of seat: " << this->seat * 6 << "\n";
+}
+
+void trip::printOfTrip()
+{
+    cout << "Departure date: ";
+    this->date.d < 10 ? cout << "0" << this->date.d << "/" : cout << this->date.d << "/";
+    this->date.m < 10 ? cout << "0" << this->date.m << "/" : cout << this->date.m << "/";
+    cout << this->date.y;
+    cout << "\nDeparture time: ";
+    this->departureTime.hour < 10 ? cout << "0" << this->departureTime.hour << ":" : cout << this->departureTime.hour << ":";
+    this->departureTime.minute < 10 ? cout << "0" << this->departureTime.minute : cout << this->departureTime.minute;
+    cout << "\nThe price is: " << this->price << "\n";
 }

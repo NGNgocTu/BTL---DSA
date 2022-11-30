@@ -1,0 +1,3 @@
+1,2,Ha Noi,Cam Ranh
+2,2,Ha Noi,Ho Chi Minh
+3,1,Ho Chi Minh,BangKok

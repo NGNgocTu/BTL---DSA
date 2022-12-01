@@ -1,0 +1,3 @@
+Vietnam Airlines,Ha Noi,Cam Ranh,26,11,2022,16,00,Nguyen Khanh Hoa,123,089,08A
+Vietnam Airlines,Ha Noi,Cam Ranh,26,11,2022,16,00,Tran Kim Phat,125,099,04B
+Vietnam Airlines,Ho Chi Minh,BangKok,26,11,2022,13,00,Le Do Khanh An,313,123,10C

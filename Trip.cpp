@@ -19,7 +19,7 @@ void trip::print()
     this->departureTime.hour < 10 ? cout << "0" << this->departureTime.hour << ":" : cout << this->departureTime.hour << ":";
     this->departureTime.minute < 10 ? cout << "0" << this->departureTime.minute : cout << this->departureTime.minute;
     cout << "\nThe price is: " << this->price;
-    cout << "\nTotal of seat: " << this->seat * 6 << "\n";
+    cout << "\nTotal of seat: " << this->seatOfRow * 6 << "\n";
 }
 
 void trip::printOfTrip()

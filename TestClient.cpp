@@ -1,11 +1,8 @@
 #include <fstream>
-#include <string>
 #include "Airlines.cpp"
 #include "Lines.cpp"
 #include "Trip.cpp"
 #include "Ticket.cpp"
-
-using namespace std;
 
 struct nodeAirline
 {
@@ -153,8 +150,9 @@ void readTrip(trip a[], int &n, lines ll[], int nll)
         a[n].setPrice(t);
         f.get(ch);
         f >> t;
-        a[n].setSeat(t);
+        a[n].setSeatOfRow(t);
         f.get(ch);
+        a[n].setSeat(a[n].getSeatOfRow() * 6);
         if (f.eof())
             break;
         else
@@ -252,7 +250,7 @@ void inputTicket(ticket a[], int &n, trip lt[], lines ll[], airlines la[], int n
     a[n].setDepartureTime(lt[t].getDepartureTime());
     a[n].setPrice(lt[t].getPrice());
     a[n].setSeat(lt[t].getSeat());
-    cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << lt[t].getSeat() << " seats.\n";
+    cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << lt[t].getSeatOfRow() << " seats.\n";
     cout << "Choose seat: ";
     getline(cin, s);
     a[n].setSeatOfClient(s);
@@ -266,8 +264,63 @@ void writeTicket(ticket a[], int n)
 
         cout << "Client " << i + 1 << ":\n";
         a[i].print();
-        cout << "\n";
+        cout << "\n\n";
     }
+}
+
+void readTicket(ticket a[], int &n, trip lt[], int nlt)
+{
+    int t;
+    time t3;
+    day t2;
+    string s;
+    char ch;
+    ifstream f("TicketManagement.txt");
+    while (!f.eof())
+    {
+        getline(f, s, ',');
+        a[n].setName(s);
+        getline(f, s, ',');
+        a[n].setFrom(s);
+        getline(f, s, ',');
+        a[n].setTo(s);
+        f >> t2.d;
+        f.get(ch);
+        f >> t2.m;
+        f.get(ch);
+        f >> t2.y;
+        f.get(ch);
+        a[n].setDate(t2);
+        f >> t3.hour;
+        f.get(ch);
+        f >> t3.minute;
+        f.get(ch);
+        a[n].setDepartureTime(t3);
+        getline(f, s, ',');
+        a[n].setNameOfClient(s);
+        getline(f, s, ',');
+        a[n].setIdOfClient(s);
+        getline(f, s, ',');
+        a[n].setPhone(s);
+        getline(f, s, '\n');
+        a[n].setSeatOfClient(s);
+        for (int i = 0; i <= nlt; i++)
+            if (a[n].getName() == lt[i].getName())
+                if (a[n].getFrom() == lt[i].getFrom() && a[n].getTo() == lt[i].getTo())
+                {
+                    a[n].setPrice(lt[i].getPrice());
+                    a[n].setId(lt[i].getId());
+                    break;
+                }
+        if (f.eof())
+        {
+            n++;
+            break;
+        }
+        else
+            n++;
+    }
+    f.close();
 }
 
 int main()
@@ -280,7 +333,7 @@ int main()
     ticket lc[10];
     int nla = 0, nll = 0, nlt = 0, nlc = 0;
     readAirline(la, nla);
-    writeAirline(la, nla);
+    // writeAirline(la, nla);
     // cout << "=====---=====\n";
     readLine(ll, nll, la, nla);
     // writeLine(ll, nll);
@@ -288,7 +341,8 @@ int main()
     readTrip(lt, nlt, ll, nll);
     // writeTrip(lt, nlt);
 
-    // inputTicket(lc, nlc, lt, ll, la, nla);
-    // writeTicket(lc, nlc);
+    readTicket(lc, nlc, lt, nlt);
+    inputTicket(lc, nlc, lt, ll, la, nla);
+    writeTicket(lc, nlc);
     return 0;
 }

@@ -7,7 +7,7 @@ time time1;
 class trip : public lines
 {
 protected:
-    int idTrip, seat, price;
+    int idTrip, seat, price, seatOfRow;
     time departureTime;
     day date;
 
@@ -18,9 +18,11 @@ public:
     void setDepartureTime(time departureTime) { this->departureTime = departureTime; }
     void setDate(day date) { this->date = date; }
     void setPrice(int price) { this->price = price; }
+    void setSeatOfRow(int seatOfRow) { this->seatOfRow = seatOfRow; }
     int getIdTrip() const { return this->idTrip; }
     int getSeat() const { return this->seat; }
     int getPrice() const { return this->price; }
+    int getSeatOfRow() const { return this->seatOfRow; }
     time getDepartureTime() const { return this->departureTime; }
     day getDate() const { return this->date; }
     virtual void print();

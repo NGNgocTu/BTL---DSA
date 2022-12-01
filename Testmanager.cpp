@@ -88,9 +88,12 @@ void createEmptyClient(listClient &l)
 int main()
 {
     listAirline la;
-    createEmptyAirline(la);
     listLine ll;
     listTrip lt;
     listClient lc;
+    createEmptyAirline(la);
+    createEmptyLine(ll);
+    createEmptyTrip(lt);
+    createEmptyClient(lc);
     return 0;
 }

@@ -80,10 +80,77 @@ void createEmptyClient(listClient &l)
     l.tail = NULL;
 }
 
-// void printAirline(listAirline &l)
-// {
-//     nodeAirline p;
-// }
+nodeAirline *CreateAirline(airlines a)
+{
+    nodeAirline *p;
+    p = new nodeAirline;
+    if (p == NULL)
+        exit(1);
+    p->adata = a;
+    p->next = NULL;
+    p->prev = NULL;
+    return p;
+}
+
+void addAirline(listAirline &la, nodeAirline *p)
+{
+    if (la.head == NULL)
+    {
+        la.head = p;
+        la.tail = la.head;
+    }
+    else
+    {
+        la.tail->next = p;
+        p->prev = la.tail;
+        la.tail = p;
+    }
+}
+
+void inputAirline(listAirline &la, int &n)
+{
+    int t;
+    string s;
+    char ch;
+    airlines a;
+    ifstream f("InputAirlines.txt");
+    while (!f.eof())
+    {
+        f >> t;
+        a.setId(t);
+        f.get(ch);
+        getline(f, s, ',');
+        a.setName(s);
+        f >> t;
+        a.setTotal(t);
+        cout << n << "\n";
+        addAirline(la, CreateAirline(a));
+        if (f.eof())
+            break;
+        else
+            n++;
+    }
+    f.close();
+}
+
+void printAirline(listAirline la)
+{
+    nodeAirline *p;
+    int i = 1;
+    if (la.head == NULL)
+        cout << "Empty airline\n";
+    else
+    {
+        p = la.head;
+        while (p)
+        {
+            cout << "The " << i++ << " airline:\n";
+            p->adata.print();
+            cout << "\n";
+            p = p->next;
+        }
+    }
+}
 
 int main()
 {
@@ -91,9 +158,12 @@ int main()
     listLine ll;
     listTrip lt;
     listClient lc;
+    int nla = 0, nll = 0, nlt = 0, nlc = 0;
     createEmptyAirline(la);
     createEmptyLine(ll);
     createEmptyTrip(lt);
     createEmptyClient(lc);
+    inputAirline(la, nla);
+    printAirline(la);
     return 0;
 }

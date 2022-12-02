@@ -339,10 +339,10 @@ int main()
     // writeLine(ll, nll);
     // cout << "=====---=====\n";
     readTrip(lt, nlt, ll, nll);
-    // writeTrip(lt, nlt);
+    writeTrip(lt, nlt);
 
-    readTicket(lc, nlc, lt, nlt);
-    inputTicket(lc, nlc, lt, ll, la, nla);
-    writeTicket(lc, nlc);
+    // readTicket(lc, nlc, lt, nlt);
+    // inputTicket(lc, nlc, lt, ll, la, nla);
+    // writeTicket(lc, nlc);
     return 0;
 }

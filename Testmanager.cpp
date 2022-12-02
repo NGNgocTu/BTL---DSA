@@ -316,7 +316,6 @@ void readTrip(listTrip &lt, int &n, listLine ll)
         f.get(ch);
         a.setSeat(a.getSeatOfRow() * 6);
         addTrip(lt, createTrip(a));
-        cout << a.getSeatOfRow() << n << "\t";
         if (f.eof())
             break;
         else
@@ -360,6 +359,7 @@ int main()
     readLine(ll, nll, la);
     // printLine(ll);
     readTrip(lt, nlt, ll);
-    // printTrip(lt);
+    cout << "Ngu";
+    printTrip(lt);
     return 0;
 }

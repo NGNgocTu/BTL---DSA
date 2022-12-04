@@ -717,7 +717,7 @@ void delAllTicket(listTicket &lc)
     {
         k = lc.head;
         lc.head = lc.head->next;
-        lc.head->prev = NULL;
+        // lc.head->prev = NULL;
         delete k;
     }
 }

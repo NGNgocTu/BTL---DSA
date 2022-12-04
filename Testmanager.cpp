@@ -710,6 +710,79 @@ void editTicket(listTicket &lc, string id)
         } while (flag == false);
 }
 
+void delAllTicket(listTicket &lc)
+{
+    nodeTicket *k = new nodeTicket;
+    while(lc.head!=NULL)
+    {
+        k=lc.head;
+        lc.head=lc.head->next;
+        lc.head->prev=NULL;
+        delete k;
+    }
+}
+void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
+{
+    int choice;
+    int nlc=0;
+    while(true)
+    {
+        system("cls");
+		cout << "\n\n\t\t========== Management Ticket ==========";
+		cout << "\n\t1. Book Ticket";
+		cout << "\n\t2. Print booked ticket";
+		cout << "\n\t3. Cancel ticket";
+		cout << "\n\t4. Get Ticket list from file";
+		cout << "\n\t5. Find ticket";
+		cout << "\n\t6. Clear all tickets";
+		cout << "\n\t0. Exit";
+		cout << "\n\n\t\t========== END ==========";
+
+        cout<<"\nEnter request: ";
+        cin>>choice;
+        if(choice<0 || choice >6)
+        {
+        	cout<<"\nYour request is not valid, please re-enter";
+        	system("pause");
+        }
+        else if(choice==1)
+        {
+            int nlc;
+        	inputTicket(lc,nlc,lt,ll,la);
+        }
+        else if(choice==2)
+        {
+            printTicket(lc);
+        }
+        else if(choice==3)
+        {
+            cout<<"\nEnter id to delete";
+            string id;
+            getline(cin,id);
+            delTicket(lc,id);
+        }
+        else if(choice==4)
+        {
+            readTicket(lc,nlc,lt);
+        }
+        else if(choice==5)
+        {
+            cout<<"\nEnter id to edit";
+            string id;
+            getline(cin,id);
+            editTicket(lc,id);
+        }
+        else if(choice==6)
+        {
+            delAllTicket(lc);
+        }
+        else{
+            break;
+        }
+    }    
+}
+
+
 int main()
 {
     listAirline la;
@@ -721,17 +794,6 @@ int main()
     createEmptyLine(ll);
     createEmptyTrip(lt);
     createEmptyTicket(lc);
-    readAirline(la, nla);
-    // printAirline(la);
-    readLine(ll, nll, la);
-    // printLine(ll);
-    readTrip(lt, nlt, ll);
-    // printTrip(lt);
-    readTicket(lc, nlc, lt);
-    // inputTicket(lc, nlc, lt, ll, la);
-    printTicket(lc);
-    editTicket(lc, "123");
-    cout << "=========\n";
-    printTicket(lc);
+    menu(la,ll,lt,lc);
     return 0;
 }

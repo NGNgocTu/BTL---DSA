@@ -198,7 +198,7 @@ void readLine(listLine &ll, int &n, listAirline la)
             if (n == t1 - 1)
             {
                 p = p->next;
-                if (p)
+                if (p != NULL)
                 {
                     t = p->adata.getTotalLine();
                     t1 += t;
@@ -471,9 +471,8 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     while (i < t - 1)
     {
         pa = pa->next;
-        t++;
+        i++;
     }
-    s = pa->adata.getName();
     cout << "\nChoose line: \n\n";
     pl = ll.head;
     t1 = 0;
@@ -505,6 +504,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
         pl = pl->next;
     }
     cin >> t;
+    t += t1;
     cout << "\nChoose Trip: \n\n";
     t1 = 0;
     if (t - 1 != 0)
@@ -541,7 +541,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     t = t - 1 + t1;
     i = 0;
     pt = lt.head;
-    while (i < t - 1)
+    while (i < t)
     {
         pt = pt->next;
         i++;
@@ -676,9 +676,11 @@ int main()
     // printLine(ll);
     readTrip(lt, nlt, ll);
     // printTrip(lt);
-    readTicket(lc, nlc, lt);
-    // inputTicket(lc, nlc, lt, ll, la);
+    // readTicket(lc, nlc, lt);
+    inputTicket(lc, nlc, lt, ll, la);
     printTicket(lc);
-    del(lc, "123");
+    // del(lc, "123");
+    // cout << "=========\n";
+    // printTicket(lc);
     return 0;
 }

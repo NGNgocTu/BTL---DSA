@@ -596,15 +596,6 @@ nodeTicket *search(listTicket lc, string id)
     return p;
 }
 
-int sumTicket(listTicket lc)
-{
-    int count = 0;
-    for (nodeTicket *i = lc.head; i != NULL; i = i->next)
-    {
-        count++;
-    }
-    return count;
-}
 
 void delBefore(listTicket &lc)
 {
@@ -658,6 +649,57 @@ void del(listTicket &lc, string id)
         delete p;
     }
 }
+
+void editTicket(listTicket &lc, string id)
+{
+    nodeTicket *p = search(lc, id);
+    int choose;
+    if(p==NULL)
+    {
+        cout<<"Ticket does not exist";
+    }
+    else
+    {
+        cout<<"\nSelect the information you want to edit ";
+        cout<<"\n1. Name";
+        cout<<"\n2. ID";
+        cout<<"\n3. Phone number";
+        cout<<"\n4. Seat";
+        cin>>choose;
+        switch (choose)
+        {
+        case 1:
+            string s;
+            cout<<p->cdata.getNameOfClient()<<endl;
+            getline(cin, s);
+            p->cdata.setNameOfClient(s)
+            break;
+        case 2:
+            string s;
+            cout<<p->cdata.getIdOfClient()<<endl;
+            getline(cin,s);
+            p->cdata.setIdOfClient(s)
+            break;
+        case 3:
+            string s;
+            cout<<p->cdata.getPhone()<<endl;
+            getline(cin,s);
+            p->cdata.setPhone(s);
+            break;
+        case 4:
+            string s;
+            cout<<p->cdata.getSeatOfClient()<<endl;
+            getline(cin,s);
+            p->cdata.setSeatOfClient(s);
+            break;
+        default:
+            cout<<"\nPlease select again";
+            editTicket(lc,id);
+            break;
+        }
+    }
+}
+
 
 int main()
 {

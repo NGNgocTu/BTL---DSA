@@ -737,6 +737,125 @@ void exportTicket(listTicket lc)
     f.close();
 }
 
+void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la)
+{
+    nodeTicket *a;
+    string s;
+    int t, t1, t2, i;
+    nodeAirline *pa;
+    nodeLine *pl;
+    nodeTrip *pt;
+    bool flag = false;
+    cout << "\nChoose airline: \n\n";
+    pa = la.head;
+    i = 0;
+    while (pa)
+    {
+        cout << i + 1 << " ";
+        pa->adata.printNameOfAirline();
+        cout << "\n";
+        pa = pa->next;
+        i++;
+    }
+    cin >> t;
+    pa = la.head;
+    i = 0;
+    while (i < t - 1)
+    {
+        pa = pa->next;
+        i++;
+    }
+    cout << "\nChoose line: \n\n";
+    pl = ll.head;
+    t1 = 0;
+    if (t - 1 != 0)
+    {
+        i = 0;
+        pa = la.head;
+        while (i < t - 1)
+        {
+            t2 = pa->adata.getTotalLine();
+            t1 += t2;
+            i++;
+            pa = pa->next;
+        }
+    }
+    t2 = pa->adata.getTotalLine() + t1;
+    i = 0;
+    while (i < t1)
+    {
+        pl = pl->next;
+        i++;
+    }
+    while (i < t2)
+    {
+        cout << i + 1 - t1 << " ";
+        pl->ldata.printOfLine();
+        cout << "\n";
+        i++;
+        pl = pl->next;
+    }
+    cin >> t;
+    t += t1;
+    cout << "\nChoose Trip: \n\n";
+    t1 = 0;
+    if (t - 1 != 0)
+    {
+        i = 0;
+        pl = ll.head;
+        while (i < t - 1)
+        {
+            t2 = pl->ldata.getTotalTrip();
+            t1 += t2;
+            i++;
+            pl = pl->next;
+        }
+    }
+    t2 = pl->ldata.getTotalTrip() + t1;
+    i = 0;
+    pt = lt.head;
+    while (i < t1)
+    {
+        pt = pt->next;
+        i++;
+    }
+    while (i < t2)
+    {
+        cout << i + 1 - t1 << " ";
+        pt->tdata.printOfTrip();
+        cout << "\n";
+        i++;
+        pt = pt->next;
+    }
+    cin >> t;
+    cin.ignore();
+    cout << "\n";
+    t = t - 1 + t1;
+    i = 0;
+    pt = lt.head;
+    while (i < t)
+    {
+        pt = pt->next;
+        i++;
+    }
+    i = 1;
+    a = lc.head;
+    while (a)
+    {
+        if (pt->tdata.getName() == a->cdata.getName())
+            if (pt->tdata.getFrom() == a->cdata.getFrom() && pt->tdata.getTo() == a->cdata.getTo())
+            {
+                cout << "The ticket " << i++ << ":\n";
+                a->cdata.print();
+                cout << "\n";
+                flag = true;
+            }
+        a = a->next;
+    }
+    if (flag == false)
+        cout << "Empty ticket!!\n";
+}
+
 void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
 {
     int choice;
@@ -746,19 +865,20 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
         system("cls");
         cout << "\n\n\t\t========== Management Ticket ==========";
         cout << "\n\t1. Book Ticket";
-        cout << "\n\t2. Print booked ticket";
+        cout << "\n\t2. Get Ticket list from file";
         cout << "\n\t3. Cancel ticket";
-        cout << "\n\t4. Get Ticket list from file";
-        cout << "\n\t5. Edit ticket";
-        cout << "\n\t6. Export Ticket list to file";
+        cout << "\n\t4. Edit ticket";
+        cout << "\n\t5. Export Ticket list to file";
+        cout << "\n\t6. Print booked ticket";
         cout << "\n\t7. Find ticket";
-        cout << "\n\t8. Clear all tickets";
+        cout << "\n\t8. Print ticket of trip";
+        cout << "\n\t9. Clear all tickets";
         cout << "\n\t0. Exit";
         cout << "\n\n\t\t========== END ==========";
 
         cout << "\nEnter request: ";
         cin >> choice;
-        if (choice < 0 || choice > 7)
+        if (choice < 0 || choice > 9)
         {
             cout << "\nYour request is not valid, please re-enter\n";
             system("pause");
@@ -773,7 +893,8 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
         }
         else if (choice == 2)
         {
-            printTicket(lc);
+            readTicket(lc, nlc, lt);
+            cout << "Completed get ticket from file!!\n";
             system("pause");
         }
         else if (choice == 3)
@@ -788,12 +909,6 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
         }
         else if (choice == 4)
         {
-            readTicket(lc, nlc, lt);
-            cout << "Completed get ticket from file!!\n";
-            system("pause");
-        }
-        else if (choice == 5)
-        {
             cout << "\nEnter id to edit: ";
             cin.ignore();
             string id;
@@ -802,10 +917,15 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
             cout << "Saved change!!\n";
             system("pause");
         }
-        else if (choice == 6)
+        else if (choice == 5)
         {
             exportTicket(lc);
             cout << "Completed!!\n";
+            system("pause");
+        }
+        else if (choice == 6)
+        {
+            printTicket(lc);
             system("pause");
         }
         else if (choice == 7)
@@ -814,11 +934,17 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
             cin.ignore();
             string id;
             getline(cin, id);
-            nodeTicket* p=search(lc, id);
+            nodeTicket *p = search(lc, id);
             p->cdata.print();
+            cout << "\n";
             system("pause");
         }
         else if (choice == 8)
+        {
+            printTicketOfTrip(lc, lt, ll, la);
+            system("pause");
+        }
+        else if (choice == 9)
         {
             delAllTicket(lc);
             cout << "All tickets cleared!!\n";

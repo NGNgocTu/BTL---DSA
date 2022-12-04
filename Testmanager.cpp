@@ -722,6 +722,22 @@ void delAllTicket(listTicket &lc)
     }
 }
 
+void exportTicket(listTicket lc)
+{
+    ofstream f("TicketManagement.txt");
+    nodeTicket *p = lc.head;
+    while (p)
+    {
+
+        f << p->cdata.getName() << "," << p->cdata.getFrom() << "," << p->cdata.getTo() << "," << p->cdata.getDay() << "," << p->cdata.getMonth() << "," << p->cdata.getYear() << ","
+          << p->cdata.getHour() << "," << p->cdata.getMinute() << "," << p->cdata.getNameOfClient() << "," << p->cdata.getIdOfClient() << "," << p->cdata.getPhone() << "," << p->cdata.getSeatOfClient();
+        p = p->next;
+        if (p)
+            f << "\n";
+    }
+    f.close();
+}
+
 void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
 {
     int choice;
@@ -735,13 +751,14 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
         cout << "\n\t3. Cancel ticket";
         cout << "\n\t4. Get Ticket list from file";
         cout << "\n\t5. Find ticket";
-        cout << "\n\t6. Clear all tickets";
+        cout << "\n\t6. Export Ticket list to file";
+        cout << "\n\t7. Clear all tickets";
         cout << "\n\t0. Exit";
         cout << "\n\n\t\t========== END ==========";
 
         cout << "\nEnter request: ";
         cin >> choice;
-        if (choice < 0 || choice > 6)
+        if (choice < 0 || choice > 7)
         {
             cout << "\nYour request is not valid, please re-enter\n";
             system("pause");
@@ -785,6 +802,12 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
             system("pause");
         }
         else if (choice == 6)
+        {
+            exportTicket(lc);
+            cout << "Completed!!\n";
+            system("pause");
+        }
+        else if (choice == 7)
         {
             delAllTicket(lc);
             cout << "All tickets cleared!!\n";

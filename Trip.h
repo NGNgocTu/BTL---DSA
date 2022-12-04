@@ -25,6 +25,11 @@ public:
     int getSeatOfRow() const { return this->seatOfRow; }
     time getDepartureTime() const { return this->departureTime; }
     day getDate() const { return this->date; }
+    int getDay() const { return this->date.d; }
+    int getMonth() const { return this->date.m; }
+    int getYear() const { return this->date.y; }
+    int getHour() const { return this->departureTime.hour; }
+    int getMinute() const { return this->departureTime.minute; }
     virtual void print();
     void printOfTrip();
 };

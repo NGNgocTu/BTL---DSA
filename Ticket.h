@@ -13,5 +13,8 @@ public:
     void setPhone(string phone) { this->phone = phone; }
     void setSeatOfClient(string seatOfClient) { this->seatOfClient = seatOfClient; }
     string getIdOfClient() const { return this->idOfClient; }
+    string getNameOfClient() const { return this->nameOfClient; }
+    string getPhone() const { return this->phone; }
+    string getSeatOfClient() const { return this->seatOfClient; }
     virtual void print();
 };

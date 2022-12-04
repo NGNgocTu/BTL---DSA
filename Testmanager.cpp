@@ -57,6 +57,55 @@ struct listTicket
     nodeTicket *tail;
 };
 
+void createEmptyAirline(listAirline &l);
+void createEmptyLine(listLine &l);
+void createEmptyTrip(listTrip &l);
+void createEmptyTicket(listTicket &l);
+nodeAirline *createAirline(airlines a);
+void addAirline(listAirline &la, nodeAirline *p);
+void readAirline(listAirline &la, int &n);
+void printAirline(listAirline la);
+nodeLine *createLine(lines a);
+void addLine(listLine &la, nodeLine *p);
+void readLine(listLine &ll, int &n, listAirline la);
+void printLine(listLine ll);
+nodeTrip *createTrip(trip a);
+void addTrip(listTrip &lt, nodeTrip *p);
+void readTrip(listTrip &lt, int &n, listLine ll);
+void printTrip(listTrip lt);
+nodeTicket *createTicket(ticket a);
+void addTicket(listTicket &lc, nodeTicket *p);
+void readTicket(listTicket &lc, int &n, listTrip lt);
+void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline la);
+void printTicket(listTicket lc);
+nodeTicket *search(listTicket lc, string id);
+void delBeforeTicket(listTicket &lc);
+void delAfterTicket(listTicket &lc);
+void delTicket(listTicket &lc, string id);
+void editTicket(listTicket &lc, string id);
+void delAllTicket(listTicket &lc);
+void exportTicket(listTicket lc);
+void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la);
+void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc);
+
+int main()
+{
+    listAirline la;
+    listLine ll;
+    listTrip lt;
+    listTicket lc;
+    int nla = 0, nll = 0, nlt = 0, nlc = 0;
+    createEmptyAirline(la);
+    createEmptyLine(ll);
+    createEmptyTrip(lt);
+    createEmptyTicket(lc);
+    readAirline(la, nla);
+    readLine(ll, nll, la);
+    readTrip(lt, nlt, ll);
+    menu(la, ll, lt, lc);
+    return 0;
+}
+
 void createEmptyAirline(listAirline &l)
 {
     l.head = NULL;
@@ -345,7 +394,7 @@ void printTrip(listTrip lt)
         {
             cout << "The " << i++ << " trip:\n";
             p->tdata.print();
-            cout << "\n";
+            cout << "\n\n";
             p = p->next;
         }
     }
@@ -579,7 +628,7 @@ void printTicket(listTicket lc)
         {
             cout << "The ticket " << i++ << ":\n";
             p->cdata.print();
-            cout << "\n";
+            cout << "\n\n";
             p = p->next;
         }
     }
@@ -955,22 +1004,4 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
             break;
         }
     }
-}
-
-int main()
-{
-    listAirline la;
-    listLine ll;
-    listTrip lt;
-    listTicket lc;
-    int nla = 0, nll = 0, nlt = 0, nlc = 0;
-    createEmptyAirline(la);
-    createEmptyLine(ll);
-    createEmptyTrip(lt);
-    createEmptyTicket(lc);
-    readAirline(la, nla);
-    readLine(ll, nll, la);
-    readTrip(lt, nlt, ll);
-    menu(la, ll, lt, lc);
-    return 0;
 }

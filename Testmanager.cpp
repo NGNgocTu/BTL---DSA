@@ -713,75 +713,89 @@ void editTicket(listTicket &lc, string id)
 void delAllTicket(listTicket &lc)
 {
     nodeTicket *k = new nodeTicket;
-    while(lc.head!=NULL)
+    while (lc.head != NULL)
     {
-        k=lc.head;
-        lc.head=lc.head->next;
-        lc.head->prev=NULL;
+        k = lc.head;
+        lc.head = lc.head->next;
+        lc.head->prev = NULL;
         delete k;
     }
 }
+
 void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
 {
     int choice;
-    int nlc=0;
-    while(true)
+    int nlc = 0;
+    while (true)
     {
         system("cls");
-		cout << "\n\n\t\t========== Management Ticket ==========";
-		cout << "\n\t1. Book Ticket";
-		cout << "\n\t2. Print booked ticket";
-		cout << "\n\t3. Cancel ticket";
-		cout << "\n\t4. Get Ticket list from file";
-		cout << "\n\t5. Find ticket";
-		cout << "\n\t6. Clear all tickets";
-		cout << "\n\t0. Exit";
-		cout << "\n\n\t\t========== END ==========";
+        cout << "\n\n\t\t========== Management Ticket ==========";
+        cout << "\n\t1. Book Ticket";
+        cout << "\n\t2. Print booked ticket";
+        cout << "\n\t3. Cancel ticket";
+        cout << "\n\t4. Get Ticket list from file";
+        cout << "\n\t5. Find ticket";
+        cout << "\n\t6. Clear all tickets";
+        cout << "\n\t0. Exit";
+        cout << "\n\n\t\t========== END ==========";
 
-        cout<<"\nEnter request: ";
-        cin>>choice;
-        if(choice<0 || choice >6)
+        cout << "\nEnter request: ";
+        cin >> choice;
+        if (choice < 0 || choice > 6)
         {
-        	cout<<"\nYour request is not valid, please re-enter";
-        	system("pause");
+            cout << "\nYour request is not valid, please re-enter\n";
+            system("pause");
         }
-        else if(choice==1)
+        else if (choice == 1)
         {
             int nlc;
-        	inputTicket(lc,nlc,lt,ll,la);
+            cin.ignore();
+            inputTicket(lc, nlc, lt, ll, la);
+            cout << "Completed book ticket!!\n";
+            system("pause");
         }
-        else if(choice==2)
+        else if (choice == 2)
         {
             printTicket(lc);
+            system("pause");
         }
-        else if(choice==3)
+        else if (choice == 3)
         {
-            cout<<"\nEnter id to delete";
+            cin.ignore();
+            cout << "\nEnter id to delete: ";
             string id;
-            getline(cin,id);
-            delTicket(lc,id);
+            getline(cin, id);
+            delTicket(lc, id);
+            cout << "Completed delete ticket!!\n";
+            system("pause");
         }
-        else if(choice==4)
+        else if (choice == 4)
         {
-            readTicket(lc,nlc,lt);
+            readTicket(lc, nlc, lt);
+            cout << "Completed get ticket from file!!\n";
+            system("pause");
         }
-        else if(choice==5)
+        else if (choice == 5)
         {
-            cout<<"\nEnter id to edit";
+            cout << "\nEnter id to edit: ";
             string id;
-            getline(cin,id);
-            editTicket(lc,id);
+            getline(cin, id);
+            editTicket(lc, id);
+            cout << "Saved change!!\n";
+            system("pause");
         }
-        else if(choice==6)
+        else if (choice == 6)
         {
             delAllTicket(lc);
+            cout << "All tickets cleared!!\n";
+            system("pause");
         }
-        else{
+        else
+        {
             break;
         }
-    }    
+    }
 }
-
 
 int main()
 {
@@ -794,6 +808,9 @@ int main()
     createEmptyLine(ll);
     createEmptyTrip(lt);
     createEmptyTicket(lc);
-    menu(la,ll,lt,lc);
+    readAirline(la, nla);
+    readLine(ll, nll, la);
+    readTrip(lt, nlt, ll);
+    menu(la, ll, lt, lc);
     return 0;
 }

@@ -751,7 +751,8 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
         cout << "\n\t4. Get Ticket list from file";
         cout << "\n\t5. Edit ticket";
         cout << "\n\t6. Export Ticket list to file";
-        cout << "\n\t7. Clear all tickets";
+        cout << "\n\t7. Find ticket";
+        cout << "\n\t8. Clear all tickets";
         cout << "\n\t0. Exit";
         cout << "\n\n\t\t========== END ==========";
 
@@ -808,6 +809,16 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
             system("pause");
         }
         else if (choice == 7)
+        {
+            cout << "\nEnter id to find: ";
+            cin.ignore();
+            string id;
+            getline(cin, id);
+            nodeTicket* p=search(lc, id);
+            p->cdata.print();
+            system("pause");
+        }
+        else if (choice == 8)
         {
             delAllTicket(lc);
             cout << "All tickets cleared!!\n";

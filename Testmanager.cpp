@@ -717,7 +717,6 @@ void delAllTicket(listTicket &lc)
     {
         k = lc.head;
         lc.head = lc.head->next;
-        // lc.head->prev = NULL;
         delete k;
     }
 }
@@ -750,7 +749,7 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
         cout << "\n\t2. Print booked ticket";
         cout << "\n\t3. Cancel ticket";
         cout << "\n\t4. Get Ticket list from file";
-        cout << "\n\t5. Find ticket";
+        cout << "\n\t5. Edit ticket";
         cout << "\n\t6. Export Ticket list to file";
         cout << "\n\t7. Clear all tickets";
         cout << "\n\t0. Exit";
@@ -795,6 +794,7 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
         else if (choice == 5)
         {
             cout << "\nEnter id to edit: ";
+            cin.ignore();
             string id;
             getline(cin, id);
             editTicket(lc, id);

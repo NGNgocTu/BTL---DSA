@@ -600,9 +600,9 @@ int main()
     readLine(ll, nll, la);
     // printLine(ll);
     readTrip(lt, nlt, ll);
-    printTrip(lt);
+    // printTrip(lt);
     // readTicket(lc, nlc, lt);
-    // inputTicket(lc, nlc, lt, ll, la);
+    inputTicket(lc, nlc, lt, ll, la);
     printTicket(lc);
     return 0;
 }

@@ -340,7 +340,7 @@ int main()
     // cout << "=====---=====\n";
     readTrip(lt, nlt, ll, nll);
     // writeTrip(lt, nlt);
-
+    cout << "ngu";
     readTicket(lc, nlc, lt, nlt);
     inputTicket(lc, nlc, lt, ll, la, nla);
     writeTicket(lc, nlc);

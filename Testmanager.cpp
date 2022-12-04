@@ -1,4 +1,5 @@
 #include <fstream>
+#include <cstring>
 #include "Airlines.cpp"
 #include "Lines.cpp"
 #include "Trip.cpp"
@@ -584,6 +585,80 @@ void printTicket(listTicket lc)
     }
 }
 
+nodeTicket *search(listTicket lc, string id)
+{
+    nodeTicket *p;
+    p = lc.head;
+    while ((p != NULL) && (p->cdata.getIdOfClient().compare(id) != 0))
+    {
+        p = p->next;
+    }
+    return p;
+}
+
+int sumTicket(listTicket lc)
+{
+    int count = 0;
+    for (nodeTicket *i = lc.head; i != NULL; i = i->next)
+    {
+        count++;
+    }
+    return count;
+}
+
+void delBefore(listTicket &lc)
+{
+    if (lc.head == NULL)
+    {
+        return;
+    }
+    else
+    {
+        nodeTicket *p = lc.head;
+        lc.head = lc.head->next;
+        lc.head->prev = NULL;
+        delete p;
+    }
+}
+
+void delAfter(listTicket &lc)
+{
+    if (lc.head == NULL)
+    {
+        return;
+    }
+    else
+    {
+        nodeTicket *p = lc.tail;
+        lc.tail = lc.tail->prev;
+        lc.tail->next = NULL;
+        delete p;
+    }
+}
+
+void del(listTicket &lc, string id)
+{
+    nodeTicket *p = search(lc, id);
+    if (p != NULL)
+    {
+        if (p->prev == NULL)
+        {
+            delBefore(lc);
+            return;
+        }
+        if (p->next == NULL)
+        {
+            delAfter(lc);
+            return;
+        }
+        p->prev->next = p->next;
+        p->next->prev = p->prev;
+        p->prev = NULL;
+        p->next = NULL;
+        delete p;
+    }
+}
+
 int main()
 {
     listAirline la;
@@ -601,8 +676,9 @@ int main()
     // printLine(ll);
     readTrip(lt, nlt, ll);
     // printTrip(lt);
-    // readTicket(lc, nlc, lt);
-    inputTicket(lc, nlc, lt, ll, la);
+    readTicket(lc, nlc, lt);
+    // inputTicket(lc, nlc, lt, ll, la);
     printTicket(lc);
+    del(lc, "123");
     return 0;
 }

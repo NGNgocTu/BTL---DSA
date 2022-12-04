@@ -210,7 +210,7 @@ void inputTicket(ticket a[], int &n, trip lt[], lines ll[], airlines la[], int n
     t2 = la[t - 1].getTotalLine() + t1;
     for (int i = t1; i < t2; i++)
     {
-        cout << i + 1 << " ";
+        cout << i + 1 - t1 << " ";
         ll[i].printOfLine();
         cout << "\n";
     }
@@ -339,10 +339,10 @@ int main()
     // writeLine(ll, nll);
     // cout << "=====---=====\n";
     readTrip(lt, nlt, ll, nll);
-    writeTrip(lt, nlt);
+    // writeTrip(lt, nlt);
 
-    // readTicket(lc, nlc, lt, nlt);
-    // inputTicket(lc, nlc, lt, ll, la, nla);
-    // writeTicket(lc, nlc);
+    readTicket(lc, nlc, lt, nlt);
+    inputTicket(lc, nlc, lt, ll, la, nla);
+    writeTicket(lc, nlc);
     return 0;
 }

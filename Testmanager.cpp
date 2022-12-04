@@ -43,17 +43,17 @@ struct listTrip
     nodeTrip *tail;
 };
 
-struct nodeClient
+struct nodeTicket
 {
     ticket cdata;
-    nodeClient *next;
-    nodeClient *prev;
+    nodeTicket *next;
+    nodeTicket *prev;
 };
 
-struct listClient
+struct listTicket
 {
-    nodeClient *head;
-    nodeClient *tail;
+    nodeTicket *head;
+    nodeTicket *tail;
 };
 
 void createEmptyAirline(listAirline &l)
@@ -74,7 +74,7 @@ void createEmptyTrip(listTrip &l)
     l.tail = NULL;
 }
 
-void createEmptyClient(listClient &l)
+void createEmptyTicket(listTicket &l)
 {
     l.head = NULL;
     l.tail = NULL;
@@ -197,8 +197,11 @@ void readLine(listLine &ll, int &n, listAirline la)
             if (n == t1 - 1)
             {
                 p = p->next;
-                t = p->adata.getTotalLine();
-                t1 += t;
+                if (p)
+                {
+                    t = p->adata.getTotalLine();
+                    t1 += t;
+                }
             }
         }
         f >> t;
@@ -289,10 +292,14 @@ void readTrip(listTrip &lt, int &n, listLine ll)
             if (n == t1 - 1)
             {
                 p = p->next;
-                t = p->ldata.getTotalTrip();
-                t1 += t;
+                if (p != NULL)
+                {
+                    t = p->ldata.getTotalTrip();
+                    t1 += t;
+                }
             }
         }
+
         f >> t;
         a.setIdTrip(t);
         f.get(ch);
@@ -343,23 +350,259 @@ void printTrip(listTrip lt)
     }
 }
 
+nodeTicket *createTicket(ticket a)
+{
+    nodeTicket *p;
+    p = new nodeTicket;
+    if (p == NULL)
+        exit(1);
+    p->cdata = a;
+    p->next = NULL;
+    p->prev = NULL;
+    return p;
+}
+
+void addTicket(listTicket &lc, nodeTicket *p)
+{
+    if (lc.head == NULL)
+    {
+        lc.head = p;
+        lc.tail = lc.head;
+    }
+    else
+    {
+        lc.tail->next = p;
+        p->prev = lc.tail;
+        lc.tail = p;
+    }
+}
+
+void readTicket(listTicket &lc, int &n, listTrip lt)
+{
+    int t;
+    time t3;
+    day t2;
+    string s;
+    char ch;
+    ticket a;
+    nodeTrip *p;
+    ifstream f("TicketManagement.txt");
+    while (!f.eof())
+    {
+
+        getline(f, s, ',');
+        a.setName(s);
+        getline(f, s, ',');
+        a.setFrom(s);
+        getline(f, s, ',');
+        a.setTo(s);
+        f >> t2.d;
+        f.get(ch);
+        f >> t2.m;
+        f.get(ch);
+        f >> t2.y;
+        f.get(ch);
+        a.setDate(t2);
+        f >> t3.hour;
+        f.get(ch);
+        f >> t3.minute;
+        f.get(ch);
+        a.setDepartureTime(t3);
+        getline(f, s, ',');
+        a.setNameOfClient(s);
+        getline(f, s, ',');
+        a.setIdOfClient(s);
+        getline(f, s, ',');
+        a.setPhone(s);
+        getline(f, s, '\n');
+        a.setSeatOfClient(s);
+        p = lt.head;
+        while (p)
+        {
+            if (a.getName() == p->tdata.getName())
+                if (a.getFrom() == p->tdata.getFrom() && a.getTo() == p->tdata.getTo())
+                {
+                    a.setPrice(p->tdata.getPrice());
+                    a.setId(p->tdata.getId());
+                    break;
+                }
+            p = p->next;
+        }
+        addTicket(lc, createTicket(a));
+        n++;
+        if (f.eof())
+            break;
+    }
+    f.close();
+}
+
+void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline la)
+{
+    ticket a;
+    string s;
+    int t, t1, t2, i;
+    nodeAirline *pa;
+    nodeLine *pl;
+    nodeTrip *pt;
+    cout << "Input name: ";
+    getline(cin, s);
+    a.setNameOfClient(s);
+    cout << "Input id: ";
+    getline(cin, s);
+    a.setIdOfClient(s);
+    cout << "Input phone: ";
+    getline(cin, s);
+    a.setPhone(s);
+    cout << "\nChoose airline: \n\n";
+    pa = la.head;
+    i = 0;
+    while (pa)
+    {
+        cout << i + 1 << " ";
+        pa->adata.printNameOfAirline();
+        cout << "\n";
+        pa = pa->next;
+        i++;
+    }
+    cin >> t;
+    pa = la.head;
+    i = 0;
+    while (i < t - 1)
+    {
+        pa = pa->next;
+        t++;
+    }
+    s = pa->adata.getName();
+    cout << "\nChoose line: \n\n";
+    pl = ll.head;
+    t1 = 0;
+    if (t - 1 != 0)
+    {
+        i = 0;
+        pa = la.head;
+        while (i < t - 1)
+        {
+            t2 = pa->adata.getTotalLine();
+            t1 += t2;
+            i++;
+            pa = pa->next;
+        }
+    }
+    t2 = pa->adata.getTotalLine() + t1;
+    i = 0;
+    while (i < t1)
+    {
+        pl = pl->next;
+        i++;
+    }
+    while (i < t2)
+    {
+        cout << i + 1 - t1 << " ";
+        pl->ldata.printOfLine();
+        cout << "\n";
+        i++;
+        pl = pl->next;
+    }
+    cin >> t;
+    cout << "\nChoose Trip: \n\n";
+    t1 = 0;
+    if (t - 1 != 0)
+    {
+        i = 0;
+        pl = ll.head;
+        while (i < t - 1)
+        {
+            t2 = pl->ldata.getTotalTrip();
+            t1 += t2;
+            i++;
+            pl = pl->next;
+        }
+    }
+    t2 = pl->ldata.getTotalTrip() + t1;
+    i = 0;
+    pt = lt.head;
+    while (i < t1)
+    {
+        pt = pt->next;
+        i++;
+    }
+    while (i < t2)
+    {
+        cout << i + 1 - t1 << " ";
+        pt->tdata.printOfTrip();
+        cout << "\n";
+        i++;
+        pt = pt->next;
+    }
+    cin >> t;
+    cin.ignore();
+    cout << "\n";
+    t = t - 1 + t1;
+    i = 0;
+    pt = lt.head;
+    while (i < t - 1)
+    {
+        pt = pt->next;
+        i++;
+    }
+    a.setId(pt->tdata.getId());
+    a.setName(pt->tdata.getName());
+    a.setTotal(pt->tdata.getTotalLine());
+    a.setIdLine(pt->tdata.getIdLine());
+    a.setTotalTrip(pt->tdata.getTotalTrip());
+    a.setFrom(pt->tdata.getFrom());
+    a.setTo(pt->tdata.getTo());
+    a.setIdTrip(pt->tdata.getIdTrip());
+    a.setDate(pt->tdata.getDate());
+    a.setDepartureTime(pt->tdata.getDepartureTime());
+    a.setPrice(pt->tdata.getPrice());
+    a.setSeat(pt->tdata.getSeat());
+    cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << pt->tdata.getSeatOfRow() << " seats.\n";
+    cout << "Choose seat: ";
+    getline(cin, s);
+    a.setSeatOfClient(s);
+    addTicket(lc, createTicket(a));
+    n++;
+}
+
+void printTicket(listTicket lc)
+{
+    nodeTicket *p;
+    int i = 1;
+    if (lc.head == NULL)
+        cout << "Empty ticket\n";
+    else
+    {
+        p = lc.head;
+        while (p)
+        {
+            cout << "The ticket " << i++ << ":\n";
+            p->cdata.print();
+            cout << "\n";
+            p = p->next;
+        }
+    }
+}
+
 int main()
 {
     listAirline la;
     listLine ll;
     listTrip lt;
-    listClient lc;
+    listTicket lc;
     int nla = 0, nll = 0, nlt = 0, nlc = 0;
     createEmptyAirline(la);
     createEmptyLine(ll);
     createEmptyTrip(lt);
-    createEmptyClient(lc);
+    createEmptyTicket(lc);
     readAirline(la, nla);
     // printAirline(la);
     readLine(ll, nll, la);
     // printLine(ll);
     readTrip(lt, nlt, ll);
-    cout << "Ngu";
     printTrip(lt);
+    // readTicket(lc, nlc, lt);
+    // inputTicket(lc, nlc, lt, ll, la);
+    printTicket(lc);
     return 0;
 }

@@ -596,17 +596,7 @@ nodeTicket *search(listTicket lc, string id)
     return p;
 }
 
-int sumTicket(listTicket lc)
-{
-    int count = 0;
-    for (nodeTicket *i = lc.head; i != NULL; i = i->next)
-    {
-        count++;
-    }
-    return count;
-}
-
-void delBefore(listTicket &lc)
+void delBeforeTicket(listTicket &lc)
 {
     if (lc.head == NULL)
     {
@@ -621,7 +611,7 @@ void delBefore(listTicket &lc)
     }
 }
 
-void delAfter(listTicket &lc)
+void delAfterTicket(listTicket &lc)
 {
     if (lc.head == NULL)
     {
@@ -636,19 +626,19 @@ void delAfter(listTicket &lc)
     }
 }
 
-void del(listTicket &lc, string id)
+void delTicket(listTicket &lc, string id)
 {
     nodeTicket *p = search(lc, id);
     if (p != NULL)
     {
         if (p->prev == NULL)
         {
-            delBefore(lc);
+            delBeforeTicket(lc);
             return;
         }
         if (p->next == NULL)
         {
-            delAfter(lc);
+            delAfterTicket(lc);
             return;
         }
         p->prev->next = p->next;
@@ -679,7 +669,7 @@ int main()
     // readTicket(lc, nlc, lt);
     inputTicket(lc, nlc, lt, ll, la);
     printTicket(lc);
-    // del(lc, "123");
+    delTicket(lc, "123");
     // cout << "=========\n";
     // printTicket(lc);
     return 0;

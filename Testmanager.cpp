@@ -87,6 +87,8 @@ void delAllTicket(listTicket &lc);
 void exportTicket(listTicket lc);
 void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la);
 void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc);
+bool findEmptySeat(listTicket lc, string s);
+nodeTrip *findTrip(listTrip lt, listLine ll, listAirline la);
 
 int main()
 {
@@ -486,29 +488,12 @@ void readTicket(listTicket &lc, int &n, listTrip lt)
     f.close();
 }
 
-void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline la)
+nodeTrip *findTrip(listTrip lt, listLine ll, listAirline la)
 {
-    ticket a;
-    string s;
-    int t, t1, t2, i;
+    int t, i, t1, t2;
     nodeAirline *pa;
     nodeLine *pl;
     nodeTrip *pt;
-    cout << "Input name: ";
-    getline(cin, s);
-    a.setNameOfClient(s);
-    do
-    {
-        cout << "Input id (has 9 digits): ";
-        getline(cin, s);
-    } while (s.length() < 9 || s.length() > 9);
-    a.setIdOfClient(s);
-    do
-    {
-        cout << "Input phone (has 10 digits): ";
-        getline(cin, s);
-    } while (s.length() < 10 || s.length() > 10);
-    a.setPhone(s);
     cout << "\nChoose airline: \n\n";
     pa = la.head;
     i = 0;
@@ -601,6 +586,30 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
         pt = pt->next;
         i++;
     }
+    return pt;
+}
+
+void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline la)
+{
+    ticket a;
+    string s;
+    nodeTrip *pt;
+    cout << "Input name: ";
+    getline(cin, s);
+    a.setNameOfClient(s);
+    do
+    {
+        cout << "Input id (has 9 digits): ";
+        getline(cin, s);
+    } while (s.length() < 9 || s.length() > 9);
+    a.setIdOfClient(s);
+    do
+    {
+        cout << "Input phone (has 10 digits): ";
+        getline(cin, s);
+    } while (s.length() < 10 || s.length() > 10);
+    a.setPhone(s);
+    pt = findTrip(lt, ll, la);
     a.setId(pt->tdata.getId());
     a.setName(pt->tdata.getName());
     a.setTotal(pt->tdata.getTotalLine());
@@ -613,9 +622,14 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     a.setDepartureTime(pt->tdata.getDepartureTime());
     a.setPrice(pt->tdata.getPrice());
     a.setSeat(pt->tdata.getSeat());
-    cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << pt->tdata.getSeatOfRow() << " seats.\n";
-    cout << "Choose seat: ";
-    getline(cin, s);
+    do
+    {
+        cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << pt->tdata.getSeatOfRow() << " seats.\n";
+        cout << "Example choose is 02C or 10F ...\n";
+        cout << "Choose seat: ";
+        getline(cin, s);
+        cout << "\n";
+    } while (findEmptySeat(lc, s) == false);
     a.setSeatOfClient(s);
     addTicket(lc, createTicket(a));
     n++;
@@ -757,9 +771,15 @@ void editTicket(listTicket &lc, string id)
                 break;
             case 4:
                 cout << p->cdata.getSeatOfClient() << endl;
-                cout << "Input your seat: ";
-                cin.ignore();
-                getline(cin, s);
+                do
+                {
+                    cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << p->cdata.getSeatOfRow() << " seats.\n";
+                    cout << "Example choose is 02C or 10F ...\n";
+                    cout << "Choose seat: ";
+                    cin.ignore();
+                    getline(cin, s);
+                    cout << "\n";
+                } while (findEmptySeat(lc, s) == false);
                 p->cdata.setSeatOfClient(s);
                 break;
             case 5:
@@ -805,103 +825,10 @@ void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la)
 {
     nodeTicket *a;
     string s;
-    int t, t1, t2, i;
-    nodeAirline *pa;
-    nodeLine *pl;
+    int i;
     nodeTrip *pt;
     bool flag = false;
-    cout << "\nChoose airline: \n\n";
-    pa = la.head;
-    i = 0;
-    while (pa)
-    {
-        cout << i + 1 << " ";
-        pa->adata.printNameOfAirline();
-        cout << "\n";
-        pa = pa->next;
-        i++;
-    }
-    cin >> t;
-    pa = la.head;
-    i = 0;
-    while (i < t - 1)
-    {
-        pa = pa->next;
-        i++;
-    }
-    cout << "\nChoose line: \n\n";
-    pl = ll.head;
-    t1 = 0;
-    if (t - 1 != 0)
-    {
-        i = 0;
-        pa = la.head;
-        while (i < t - 1)
-        {
-            t2 = pa->adata.getTotalLine();
-            t1 += t2;
-            i++;
-            pa = pa->next;
-        }
-    }
-    t2 = pa->adata.getTotalLine() + t1;
-    i = 0;
-    while (i < t1)
-    {
-        pl = pl->next;
-        i++;
-    }
-    while (i < t2)
-    {
-        cout << i + 1 - t1 << " ";
-        pl->ldata.printOfLine();
-        cout << "\n";
-        i++;
-        pl = pl->next;
-    }
-    cin >> t;
-    t += t1;
-    cout << "\nChoose Trip: \n\n";
-    t1 = 0;
-    if (t - 1 != 0)
-    {
-        i = 0;
-        pl = ll.head;
-        while (i < t - 1)
-        {
-            t2 = pl->ldata.getTotalTrip();
-            t1 += t2;
-            i++;
-            pl = pl->next;
-        }
-    }
-    t2 = pl->ldata.getTotalTrip() + t1;
-    i = 0;
-    pt = lt.head;
-    while (i < t1)
-    {
-        pt = pt->next;
-        i++;
-    }
-    while (i < t2)
-    {
-        cout << i + 1 - t1 << " ";
-        pt->tdata.printOfTrip();
-        cout << "\n";
-        i++;
-        pt = pt->next;
-    }
-    cin >> t;
-    cin.ignore();
-    cout << "\n";
-    t = t - 1 + t1;
-    i = 0;
-    pt = lt.head;
-    while (i < t)
-    {
-        pt = pt->next;
-        i++;
-    }
+    pt = findTrip(lt, ll, la);
     i = 1;
     a = lc.head;
     while (a)
@@ -1021,4 +948,17 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
             break;
         }
     }
+}
+
+bool findEmptySeat(listTicket lc, string s)
+{
+    nodeTicket *p = lc.head;
+    bool flag = true;
+    while (p)
+    {
+        if (p->cdata.getSeatOfClient() == s)
+            return false;
+        p = p->next;
+    }
+    return flag;
 }

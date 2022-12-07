@@ -12,7 +12,7 @@ protected:
     day date;
 
 public:
-    trip(int id = -1, string name = "", int totalLine = 0, int idLine = 0, int totalTrip = 0, string from = "", string to = "", int idTrip = 0, day date = date1, time departureTime = time1, int price = 0, int seat = 0);
+    trip(int id = -1, string name = "", int totalLine = 0, int idLine = 0, int totalTrip = 0, string from = "", string to = "", int idTrip = 0, day date = date1, time departureTime = time1, int price = 0, int seatOfRow = 0);
     void setIdTrip(int idTrip) { this->idTrip = idTrip; }
     void setSeat(int seat) { this->seat = seat; }
     void setDepartureTime(time departureTime) { this->departureTime = departureTime; }

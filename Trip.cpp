@@ -1,10 +1,10 @@
 #include "Trip.h"
 
-trip::trip(int id, string name, int totalLine, int idLine, int totalTrip, string from, string to, int idTrip, day date, time departureTime, int price, int seat) : lines(id, name, totalLine, idLine, totalTrip, from, to)
+trip::trip(int id, string name, int totalLine, int idLine, int totalTrip, string from, string to, int idTrip, day date, time departureTime, int price, int seatOfRow) : lines(id, name, totalLine, idLine, totalTrip, from, to)
 {
     this->idTrip = idTrip;
     this->departureTime = departureTime;
-    this->seat = seat;
+    this->seatOfRow = seatOfRow;
 }
 
 void trip::print()

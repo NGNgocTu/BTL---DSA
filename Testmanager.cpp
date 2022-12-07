@@ -476,11 +476,13 @@ void readTicket(listTicket &lc, int &n, listTrip lt)
                 {
                     a.setPrice(p->tdata.getPrice());
                     a.setId(p->tdata.getId());
+                    p->tdata.setSeat(p->tdata.getSeat() - 1);
                     break;
                 }
             p = p->next;
         }
         addTicket(lc, createTicket(a));
+
         n++;
         if (f.eof())
             break;
@@ -609,7 +611,12 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
         getline(cin, s);
     } while (s.length() < 10 || s.length() > 10);
     a.setPhone(s);
-    pt = findTrip(lt, ll, la);
+    do
+    {
+        pt = findTrip(lt, ll, la);
+        if (pt->tdata.getSeat() == 0)
+            cout << "The tickets were sold out!!\nPlease choose again\n\n";
+    } while (pt->tdata.getSeat() <= 0);
     a.setId(pt->tdata.getId());
     a.setName(pt->tdata.getName());
     a.setTotal(pt->tdata.getTotalLine());
@@ -622,6 +629,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     a.setDepartureTime(pt->tdata.getDepartureTime());
     a.setPrice(pt->tdata.getPrice());
     a.setSeat(pt->tdata.getSeat());
+
     do
     {
         cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << pt->tdata.getSeatOfRow() << " seats.\n";
@@ -632,6 +640,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     } while (findEmptySeat(lc, s) == false);
     a.setSeatOfClient(s);
     addTicket(lc, createTicket(a));
+    pt->tdata.setSeat(pt->tdata.getSeat() - 1);
     n++;
 }
 

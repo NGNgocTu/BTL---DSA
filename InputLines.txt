@@ -1,0 +1,9 @@
+1,2,Ha Noi,Khanh Hoa
+2,2,Ha Noi,Ho Chi Minh
+3,1,Ho Chi Minh,Thai Lan
+1,2,Da Nang,Can Tho
+2,1,Da Nang,Ha Noi
+3,3,Khanh Hoa,Quang Ninh
+4,2,Binh Dinh,Dong Nai
+1,2,Ho Chi Minh,Malaysia
+2,1,Ha Noi,Myanmar

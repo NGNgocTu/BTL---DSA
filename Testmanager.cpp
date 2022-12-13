@@ -89,6 +89,8 @@ void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la);
 void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc);
 bool findEmptySeat(listTicket lc, nodeTicket *a, string s);
 nodeTrip *findTrip(listTrip lt, listLine ll, listAirline la);
+bool checkSeat(string s, int n);
+string formatSeat(string s);
 
 int main()
 {
@@ -477,12 +479,12 @@ void readTicket(listTicket &lc, int &n, listTrip lt)
                     a.setPrice(p->tdata.getPrice());
                     a.setId(p->tdata.getId());
                     p->tdata.setSeat(p->tdata.getSeat() - 1);
+                    a.setSeatOfRow(p->tdata.getSeatOfRow());
                     break;
                 }
             p = p->next;
         }
         addTicket(lc, createTicket(a));
-
         n++;
         if (f.eof())
             break;
@@ -630,6 +632,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     a.setDepartureTime(pt->tdata.getDepartureTime());
     a.setPrice(pt->tdata.getPrice());
     a.setSeat(pt->tdata.getSeat());
+    a.setSeatOfRow(pt->tdata.getSeatOfRow());
     p = createTicket(a);
     do
     {
@@ -638,8 +641,9 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
         cout << "Choose seat: ";
         getline(cin, s);
         cout << "\n";
+        s = formatSeat(s);
         p->cdata.setSeatOfClient(s);
-    } while (findEmptySeat(lc, p, s) == false);
+    } while (findEmptySeat(lc, p, s) == false || checkSeat(s, pt->tdata.getSeatOfRow()) == false);
     addTicket(lc, p);
     pt->tdata.setSeat(pt->tdata.getSeat() - 1);
     n++;
@@ -656,9 +660,10 @@ void printTicket(listTicket lc)
         p = lc.head;
         while (p)
         {
-            cout << "The ticket " << i++ << ":\n";
+            // cout << "The ticket " << i++ << ":\n";
+            cout << i++;
             p->cdata.print();
-            cout << "\n\n";
+            // cout << "\n\n";
             p = p->next;
         }
     }
@@ -789,7 +794,10 @@ void editTicket(listTicket &lc, string id)
                     cin.ignore();
                     getline(cin, s);
                     cout << "\n";
-                } while (findEmptySeat(lc, p, s) == false);
+                    s = formatSeat(s);
+                    if (s == p->cdata.getSeatOfClient())
+                        break;
+                } while (findEmptySeat(lc, p, s) == false || checkSeat(s, p->cdata.getSeatOfRow()) == false);
                 p->cdata.setSeatOfClient(s);
                 break;
             case 5:
@@ -969,5 +977,29 @@ bool findEmptySeat(listTicket lc, nodeTicket *a, string s)
             return false;
         p = p->next;
     }
+    return true;
+}
+
+string formatSeat(string s)
+{
+    if (s.length() < 3)
+        s = "0" + s;
+    if (s[2] >= 'a' && s[2] <= 'f')
+        s[2] -= 32;
+    return s;
+}
+
+bool checkSeat(string s, int n)
+{
+    s = formatSeat(s);
+    if (s[2] == 'E' || s[2] > 'F')
+        return false;
+    string s1 = to_string(n), s2 = "00";
+    if (s1.length() < 2)
+        s1 = "0" + s1;
+    s1 = s1 + s[2];
+    s2 = s2 + s[2];
+    if (s > s1 || s2 >= s)
+        return false;
     return true;
 }

@@ -1,3 +1,0 @@
-Vietnam Airlines,Ha Noi,Khanh Hoa,26,11,2022,16,0,Nguyen Khanh Hoa,123,089,08A
-Vietnam Airlines,Ha Noi,Myanmar,26,11,2022,16,0,Tran Kim Phat,125,099,04B
-Vietnam Airlines,Ho Chi Minh,Thai Lan,26,11,2022,13,0,Le Do Khanh An,313,123,10C

@@ -87,7 +87,7 @@ void delAllTicket(listTicket &lc);
 void exportTicket(listTicket lc);
 void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la);
 void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc);
-bool findEmptySeat(listTicket lc, string s);
+bool findEmptySeat(listTicket lc, nodeTicket *a, string s);
 nodeTrip *findTrip(listTrip lt, listLine ll, listAirline la);
 
 int main()
@@ -596,6 +596,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     ticket a;
     string s;
     nodeTrip *pt;
+    nodeTicket *p;
     cout << "Input name: ";
     getline(cin, s);
     a.setNameOfClient(s);
@@ -629,7 +630,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     a.setDepartureTime(pt->tdata.getDepartureTime());
     a.setPrice(pt->tdata.getPrice());
     a.setSeat(pt->tdata.getSeat());
-
+    p = createTicket(a);
     do
     {
         cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << pt->tdata.getSeatOfRow() << " seats.\n";
@@ -637,9 +638,9 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
         cout << "Choose seat: ";
         getline(cin, s);
         cout << "\n";
-    } while (findEmptySeat(lc, s) == false);
-    a.setSeatOfClient(s);
-    addTicket(lc, createTicket(a));
+        p->cdata.setSeatOfClient(s);
+    } while (findEmptySeat(lc, p, s) == false);
+    addTicket(lc, p);
     pt->tdata.setSeat(pt->tdata.getSeat() - 1);
     n++;
 }
@@ -788,7 +789,7 @@ void editTicket(listTicket &lc, string id)
                     cin.ignore();
                     getline(cin, s);
                     cout << "\n";
-                } while (findEmptySeat(lc, s) == false);
+                } while (findEmptySeat(lc, p, s) == false);
                 p->cdata.setSeatOfClient(s);
                 break;
             case 5:
@@ -959,15 +960,14 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
     }
 }
 
-bool findEmptySeat(listTicket lc, string s)
+bool findEmptySeat(listTicket lc, nodeTicket *a, string s)
 {
     nodeTicket *p = lc.head;
-    bool flag = true;
     while (p)
     {
-        if (p->cdata.getSeatOfClient() == s)
+        if (p->cdata.getSeatOfClient() == s && p->cdata.getFrom() == a->cdata.getFrom() && p->cdata.getTo() == a->cdata.getTo() && p->cdata.getName() == a->cdata.getName() && p->cdata.getDepartureTime().hour == a->cdata.getDepartureTime().hour && p->cdata.getDepartureTime().minute == a->cdata.getDepartureTime().minute)
             return false;
         p = p->next;
     }
-    return flag;
+    return true;
 }

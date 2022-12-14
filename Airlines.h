@@ -5,12 +5,12 @@
 
 using namespace std;
 
-struct time
+struct timeFly
 {
     int hour, minute;
 };
 
-struct day
+struct dayFly
 {
     int d, m, y;
 };

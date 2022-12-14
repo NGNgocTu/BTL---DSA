@@ -1,9 +1,9 @@
 #include "Trip.h"
 
-trip::trip(int id, string name, int totalLine, int idLine, int totalTrip, string from, string to, int idTrip, day date, time departureTime, int price, int seatOfRow) : lines(id, name, totalLine, idLine, totalTrip, from, to)
+trip::trip(int id, string name, int totalLine, int idLine, int totalTrip, string from, string to, int idTrip, dayFly date, timeFly departureTimeFly, int price, int seatOfRow) : lines(id, name, totalLine, idLine, totalTrip, from, to)
 {
     this->idTrip = idTrip;
-    this->departureTime = departureTime;
+    this->departureTimeFly = departureTimeFly;
     this->seatOfRow = seatOfRow;
 }
 
@@ -15,9 +15,9 @@ void trip::print()
     this->date.d < 10 ? cout << "0" << this->date.d << "/" : cout << this->date.d << "/";
     this->date.m < 10 ? cout << "0" << this->date.m << "/" : cout << this->date.m << "/";
     cout << this->date.y;
-    cout << "\nDeparture time: ";
-    this->departureTime.hour < 10 ? cout << "0" << this->departureTime.hour << ":" : cout << this->departureTime.hour << ":";
-    this->departureTime.minute < 10 ? cout << "0" << this->departureTime.minute : cout << this->departureTime.minute;
+    cout << "\nDeparture timeFly: ";
+    this->departureTimeFly.hour < 10 ? cout << "0" << this->departureTimeFly.hour << ":" : cout << this->departureTimeFly.hour << ":";
+    this->departureTimeFly.minute < 10 ? cout << "0" << this->departureTimeFly.minute : cout << this->departureTimeFly.minute;
     cout << "\nThe price is: " << this->price;
     cout << "\nTotal of seat: " << this->seat << "\n";
 }
@@ -28,8 +28,8 @@ void trip::printOfTrip()
     this->date.d < 10 ? cout << "0" << this->date.d << "/" : cout << this->date.d << "/";
     this->date.m < 10 ? cout << "0" << this->date.m << "/" : cout << this->date.m << "/";
     cout << this->date.y;
-    cout << "\nDeparture time: ";
-    this->departureTime.hour < 10 ? cout << "0" << this->departureTime.hour << ":" : cout << this->departureTime.hour << ":";
-    this->departureTime.minute < 10 ? cout << "0" << this->departureTime.minute : cout << this->departureTime.minute;
+    cout << "\nDeparture timeFly: ";
+    this->departureTimeFly.hour < 10 ? cout << "0" << this->departureTimeFly.hour << ":" : cout << this->departureTimeFly.hour << ":";
+    this->departureTimeFly.minute < 10 ? cout << "0" << this->departureTimeFly.minute : cout << this->departureTimeFly.minute;
     cout << "\nThe price is: " << this->price << "\n";
 }

@@ -328,8 +328,8 @@ void readTrip(listTrip &lt, int &n, listLine ll)
     trip a;
     nodeLine *p = ll.head;
     int t, t1 = p->ldata.getTotalTrip();
-    time t3;
-    day t2;
+    timeFly t3;
+    dayFly t2;
     char ch;
     ifstream f("InputTrip.txt");
     while (!f.eof())
@@ -368,7 +368,7 @@ void readTrip(listTrip &lt, int &n, listLine ll)
         f.get(ch);
         f >> t3.minute;
         f.get(ch);
-        a.setDepartureTime(t3);
+        a.setDepartureTimeFly(t3);
         f >> t;
         a.setPrice(t);
         f.get(ch);
@@ -434,8 +434,8 @@ void addTicket(listTicket &lc, nodeTicket *p)
 void readTicket(listTicket &lc, int &n, listTrip lt)
 {
     int t;
-    time t3;
-    day t2;
+    timeFly t3;
+    dayFly t2;
     string s;
     char ch;
     ticket a;
@@ -461,7 +461,7 @@ void readTicket(listTicket &lc, int &n, listTrip lt)
         f.get(ch);
         f >> t3.minute;
         f.get(ch);
-        a.setDepartureTime(t3);
+        a.setDepartureTimeFly(t3);
         getline(f, s, ',');
         a.setNameOfClient(s);
         getline(f, s, ',');
@@ -629,7 +629,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     a.setTo(pt->tdata.getTo());
     a.setIdTrip(pt->tdata.getIdTrip());
     a.setDate(pt->tdata.getDate());
-    a.setDepartureTime(pt->tdata.getDepartureTime());
+    a.setDepartureTimeFly(pt->tdata.getDepartureTimeFly());
     a.setPrice(pt->tdata.getPrice());
     a.setSeat(pt->tdata.getSeat());
     a.setSeatOfRow(pt->tdata.getSeatOfRow());
@@ -637,6 +637,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     do
     {
         cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << pt->tdata.getSeatOfRow() << " seats.\n";
+        cout << "Empty " << p->cdata.getSeat() << " seats.\n";
         cout << "Example choose is 02C or 10F ...\n";
         cout << "Choose seat: ";
         getline(cin, s);
@@ -658,12 +659,13 @@ void printTicket(listTicket lc)
     else
     {
         p = lc.head;
+        cout << "|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n";
+        cout << "| No |   Name of Airline          |  From                |  To             |  Day         |  Time   |  Price   |  Name of customer            |  ID         |  Phone       |  Seat |\n";
+        cout << "|==================================================================================================================================================================================|\n";
         while (p)
         {
-            // cout << "The ticket " << i++ << ":\n";
-            cout << i++;
+            cout << "| " << i++ << " ";
             p->cdata.print();
-            // cout << "\n\n";
             p = p->next;
         }
     }
@@ -789,6 +791,7 @@ void editTicket(listTicket &lc, string id)
                 do
                 {
                     cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << p->cdata.getSeatOfRow() << " seats.\n";
+                    cout << "Empty " << p->cdata.getSeat() << " seats.\n";
                     cout << "Example choose is 02C or 10F ...\n";
                     cout << "Choose seat: ";
                     cin.ignore();
@@ -830,7 +833,7 @@ void exportTicket(listTicket lc)
     while (p)
     {
 
-        f << p->cdata.getName() << "," << p->cdata.getFrom() << "," << p->cdata.getTo() << "," << p->cdata.getDay() << "," << p->cdata.getMonth() << "," << p->cdata.getYear() << ","
+        f << p->cdata.getName() << "," << p->cdata.getFrom() << "," << p->cdata.getTo() << "," << p->cdata.getDayFly() << "," << p->cdata.getMonth() << "," << p->cdata.getYear() << ","
           << p->cdata.getHour() << "," << p->cdata.getMinute() << "," << p->cdata.getNameOfClient() << "," << p->cdata.getIdOfClient() << "," << p->cdata.getPhone() << "," << p->cdata.getSeatOfClient();
         p = p->next;
         if (p)
@@ -973,7 +976,7 @@ bool findEmptySeat(listTicket lc, nodeTicket *a, string s)
     nodeTicket *p = lc.head;
     while (p)
     {
-        if (p->cdata.getSeatOfClient() == s && p->cdata.getFrom() == a->cdata.getFrom() && p->cdata.getTo() == a->cdata.getTo() && p->cdata.getName() == a->cdata.getName() && p->cdata.getDepartureTime().hour == a->cdata.getDepartureTime().hour && p->cdata.getDepartureTime().minute == a->cdata.getDepartureTime().minute)
+        if (p->cdata.getSeatOfClient() == s && p->cdata.getFrom() == a->cdata.getFrom() && p->cdata.getTo() == a->cdata.getTo() && p->cdata.getName() == a->cdata.getName() && p->cdata.getDepartureTimeFly().hour == a->cdata.getDepartureTimeFly().hour && p->cdata.getDepartureTimeFly().minute == a->cdata.getDepartureTimeFly().minute)
             return false;
         p = p->next;
     }

@@ -5,6 +5,7 @@
 #include "Trip.cpp"
 #include "Ticket.cpp"
 
+// Cấu trúc cho node máy bay
 struct nodeAirline
 {
     airlines adata;
@@ -12,12 +13,14 @@ struct nodeAirline
     nodeAirline *prev;
 };
 
+// Cấu trúc cho danh sách liên kết đôi cho máy bay
 struct listAirline
 {
     nodeAirline *head;
     nodeAirline *tail;
 };
 
+// Cấu trúc cho node cho tuyến bay
 struct nodeLine
 {
     lines ldata;
@@ -25,12 +28,14 @@ struct nodeLine
     nodeLine *prev;
 };
 
+// Cấu trúc cho danh sách liêm kết đôi cho tuyến bay
 struct listLine
 {
     nodeLine *head;
     nodeLine *tail;
 };
 
+// Cấu trúc cho node cho chuyến bay
 struct nodeTrip
 {
     trip tdata;
@@ -38,12 +43,14 @@ struct nodeTrip
     nodeTrip *prev;
 };
 
+// Cấu trúc cho danh sách liên kết đôi cho chuyến bay
 struct listTrip
 {
     nodeTrip *head;
     nodeTrip *tail;
 };
 
+// Cấu trúc cho node cho vé
 struct nodeTicket
 {
     ticket cdata;
@@ -51,6 +58,7 @@ struct nodeTicket
     nodeTicket *prev;
 };
 
+// Cấu trúc cho danh sách liên kết đôi cho vé
 struct listTicket
 {
     nodeTicket *head;
@@ -92,48 +100,58 @@ nodeTrip *findTrip(listTrip lt, listLine ll, listAirline la);
 bool checkSeat(string s, int n);
 string formatSeat(string s);
 
+// Chương trình chính
 int main()
 {
+    // Khai báo biến
     listAirline la;
     listLine ll;
     listTrip lt;
     listTicket lc;
     int nla = 0, nll = 0, nlt = 0, nlc = 0;
+    // Tạo các danh sách liên kết đôi rỗng
     createEmptyAirline(la);
     createEmptyLine(ll);
     createEmptyTrip(lt);
     createEmptyTicket(lc);
+    // Đọc dữ liệu máy bay, chuyến, tuyến
     readAirline(la, nla);
     readLine(ll, nll, la);
     readTrip(lt, nlt, ll);
+    // Bắt đầu điều hướng chương trình
     menu(la, ll, lt, lc);
     return 0;
 }
 
+// Khởi tạo danh sách máy bay rỗng
 void createEmptyAirline(listAirline &l)
 {
     l.head = NULL;
     l.tail = NULL;
 }
 
+// Khởi tạo danh sách đường bay rỗng
 void createEmptyLine(listLine &l)
 {
     l.head = NULL;
     l.tail = NULL;
 }
 
+// Khởi tạo danh sách chuyến bay rỗng
 void createEmptyTrip(listTrip &l)
 {
     l.head = NULL;
     l.tail = NULL;
 }
 
+// Khởi tạo danh sách vé rỗng
 void createEmptyTicket(listTicket &l)
 {
     l.head = NULL;
     l.tail = NULL;
 }
 
+// Tạo một máy bay
 nodeAirline *createAirline(airlines a)
 {
     nodeAirline *p;
@@ -146,6 +164,7 @@ nodeAirline *createAirline(airlines a)
     return p;
 }
 
+// Thêm một máy bay vào danh sách
 void addAirline(listAirline &la, nodeAirline *p)
 {
     if (la.head == NULL)
@@ -161,6 +180,7 @@ void addAirline(listAirline &la, nodeAirline *p)
     }
 }
 
+// Đọc danh sách máy bay từ file InputAirlines.txt vào danh sách
 void readAirline(listAirline &la, int &n)
 {
     int t;
@@ -186,6 +206,7 @@ void readAirline(listAirline &la, int &n)
     f.close();
 }
 
+// Xuất thông tin máy bay ra màn hình (Chuẩn bị cho phân quyền cao hơn)
 void printAirline(listAirline la)
 {
     nodeAirline *p;
@@ -205,6 +226,7 @@ void printAirline(listAirline la)
     }
 }
 
+// Tạo một tuyến bay
 nodeLine *createLine(lines a)
 {
     nodeLine *p;
@@ -217,6 +239,7 @@ nodeLine *createLine(lines a)
     return p;
 }
 
+// Thêm một tuyến bay vào danh sách
 void addLine(listLine &la, nodeLine *p)
 {
     if (la.head == NULL)
@@ -232,6 +255,7 @@ void addLine(listLine &la, nodeLine *p)
     }
 }
 
+// Đọc danh sách tuyến bay từ file InputLines.txt vào danh sách
 void readLine(listLine &ll, int &n, listAirline la)
 {
     lines a;
@@ -277,6 +301,7 @@ void readLine(listLine &ll, int &n, listAirline la)
     f.close();
 }
 
+// Xuất thông tin tuyến bay ra màn hình (Chuẩn bị cho phân quyền cao hơn)
 void printLine(listLine ll)
 {
     nodeLine *p;
@@ -296,6 +321,7 @@ void printLine(listLine ll)
     }
 }
 
+// Tạo một chuyến bay
 nodeTrip *createTrip(trip a)
 {
     nodeTrip *p;
@@ -308,6 +334,7 @@ nodeTrip *createTrip(trip a)
     return p;
 }
 
+// Thêm một chuyến bay vào danh sách
 void addTrip(listTrip &lt, nodeTrip *p)
 {
     if (lt.head == NULL)
@@ -323,6 +350,7 @@ void addTrip(listTrip &lt, nodeTrip *p)
     }
 }
 
+// Đọc danh sách chuyến bay từ file InputTrip.txt vào danh sách
 void readTrip(listTrip &lt, int &n, listLine ll)
 {
     trip a;
@@ -385,6 +413,7 @@ void readTrip(listTrip &lt, int &n, listLine ll)
     f.close();
 }
 
+// Xuất thông tin chuyến bay ra màn hình (Chuẩn bị cho phân quyền cao hơn)
 void printTrip(listTrip lt)
 {
     nodeTrip *p;
@@ -404,6 +433,7 @@ void printTrip(listTrip lt)
     }
 }
 
+// Tạo một vé
 nodeTicket *createTicket(ticket a)
 {
     nodeTicket *p;
@@ -416,6 +446,7 @@ nodeTicket *createTicket(ticket a)
     return p;
 }
 
+// Thêm một vé vào danh sách
 void addTicket(listTicket &lc, nodeTicket *p)
 {
     if (lc.head == NULL)
@@ -431,6 +462,7 @@ void addTicket(listTicket &lc, nodeTicket *p)
     }
 }
 
+// Đọc danh sách vé từ file TicketManagement.txt vào danh sách
 void readTicket(listTicket &lc, int &n, listTrip lt)
 {
     int t;
@@ -492,6 +524,7 @@ void readTicket(listTicket &lc, int &n, listTrip lt)
     f.close();
 }
 
+// Tìm thông tin cho một chuyến bay
 nodeTrip *findTrip(listTrip lt, listLine ll, listAirline la)
 {
     int t, i, t1, t2;
@@ -593,6 +626,7 @@ nodeTrip *findTrip(listTrip lt, listLine ll, listAirline la)
     return pt;
 }
 
+// Nhập thông tin vé từ bàn phím
 void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline la)
 {
     ticket a;
@@ -650,6 +684,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     n++;
 }
 
+// Xuất thông tin vé ra màn hình
 void printTicket(listTicket lc)
 {
     nodeTicket *p;
@@ -671,6 +706,7 @@ void printTicket(listTicket lc)
     }
 }
 
+// Tìm vé theo mã định danh
 nodeTicket *search(listTicket lc, string id)
 {
     nodeTicket *p;
@@ -682,6 +718,7 @@ nodeTicket *search(listTicket lc, string id)
     return p;
 }
 
+// Xóa một vé ở đầu danh sách
 void delBeforeTicket(listTicket &lc)
 {
     if (lc.head == NULL)
@@ -697,6 +734,7 @@ void delBeforeTicket(listTicket &lc)
     }
 }
 
+// Xóa một vé ở cuối danh sách
 void delAfterTicket(listTicket &lc)
 {
     if (lc.head == NULL)
@@ -712,6 +750,7 @@ void delAfterTicket(listTicket &lc)
     }
 }
 
+// Xóa một vé theo mã định danh
 bool delTicket(listTicket &lc, string id)
 {
     bool flag = false;
@@ -738,6 +777,7 @@ bool delTicket(listTicket &lc, string id)
     return flag;
 }
 
+// Chỉnh sửa thông tin vé theo mã định danh
 void editTicket(listTicket &lc, string id)
 {
     nodeTicket *p = search(lc, id);
@@ -815,6 +855,7 @@ void editTicket(listTicket &lc, string id)
     cout << "Saved change!!\n";
 }
 
+// Xóa tất cả vé
 void delAllTicket(listTicket &lc)
 {
     nodeTicket *k = new nodeTicket;
@@ -826,6 +867,7 @@ void delAllTicket(listTicket &lc)
     }
 }
 
+// Xuất thông tin vé ra file TicketManagement.txt
 void exportTicket(listTicket lc)
 {
     ofstream f("TicketManagement.txt");
@@ -842,6 +884,7 @@ void exportTicket(listTicket lc)
     f.close();
 }
 
+// Xuất thông tin vé theo một chuyến ra màn hình
 void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la)
 {
     nodeTicket *a;
@@ -852,14 +895,16 @@ void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la)
     pt = findTrip(lt, ll, la);
     i = 1;
     a = lc.head;
+    cout << "|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n";
+    cout << "| No |   Name of Airline          |  From                |  To             |  Day         |  Time   |  Price   |  Name of customer            |  ID         |  Phone       |  Seat |\n";
+    cout << "|==================================================================================================================================================================================|\n";
     while (a)
     {
         if (pt->tdata.getName() == a->cdata.getName())
             if (pt->tdata.getFrom() == a->cdata.getFrom() && pt->tdata.getTo() == a->cdata.getTo())
             {
-                cout << "The ticket " << i++ << ":\n";
+                cout << "| " << i++ << " ";
                 a->cdata.print();
-                cout << "\n";
                 flag = true;
             }
         a = a->next;
@@ -868,6 +913,7 @@ void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la)
         cout << "Empty ticket!!\n";
 }
 
+// Menu điều hướng cho toàn chương trình
 void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
 {
     int choice;
@@ -971,6 +1017,7 @@ void menu(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
     }
 }
 
+// Kiểm tra ghế còn trống không
 bool findEmptySeat(listTicket lc, nodeTicket *a, string s)
 {
     nodeTicket *p = lc.head;
@@ -983,6 +1030,7 @@ bool findEmptySeat(listTicket lc, nodeTicket *a, string s)
     return true;
 }
 
+// Định dạng thông tin ghế
 string formatSeat(string s)
 {
     if (s.length() < 3)
@@ -992,6 +1040,7 @@ string formatSeat(string s)
     return s;
 }
 
+// Kiểm tra thông tin nhập vào đúng hay không
 bool checkSeat(string s, int n)
 {
     s = formatSeat(s);

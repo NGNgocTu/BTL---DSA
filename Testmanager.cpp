@@ -104,6 +104,7 @@ string formatSeat(string s);
 int main()
 {
     // Khai báo biến
+
     listAirline la;
     listLine ll;
     listTrip lt;
@@ -118,6 +119,7 @@ int main()
     readAirline(la, nla);
     readLine(ll, nll, la);
     readTrip(lt, nlt, ll);
+    readTicket(lc, nlc, lt);
     // Bắt đầu điều hướng chương trình
     menu(la, ll, lt, lc);
     return 0;
@@ -446,7 +448,7 @@ nodeTicket *createTicket(ticket a)
     return p;
 }
 
-// Thêm một vé vào danh sách
+// Thêm một vé vào cuối danh sách
 void addTicket(listTicket &lc, nodeTicket *p)
 {
     if (lc.head == NULL)
@@ -462,6 +464,19 @@ void addTicket(listTicket &lc, nodeTicket *p)
     }
 }
 
+void insertTicket(listTicket &lc, nodeTicket *q, nodeTicket *p)
+{
+    if (q == lc.tail)
+        addTicket(lc, p);
+    else
+    {
+        p->next = q->next;
+        q->next->prev = p;
+        q->next = p;
+        p->prev = q;
+    }
+}
+
 // Đọc danh sách vé từ file TicketManagement.txt vào danh sách
 void readTicket(listTicket &lc, int &n, listTrip lt)
 {
@@ -472,6 +487,7 @@ void readTicket(listTicket &lc, int &n, listTrip lt)
     char ch;
     ticket a;
     nodeTrip *p;
+    nodeTicket *nt = lc.head;
     ifstream f("TicketManagement.txt");
     while (!f.eof())
     {
@@ -516,7 +532,9 @@ void readTicket(listTicket &lc, int &n, listTrip lt)
                 }
             p = p->next;
         }
-        addTicket(lc, createTicket(a));
+        if (search(lc, a.getIdOfClient()) == NULL)
+            insertTicket(lc, nt, createTicket(a));
+        nt = search(lc, a.getIdOfClient());
         n++;
         if (f.eof())
             break;
@@ -694,12 +712,12 @@ void printTicket(listTicket lc)
     else
     {
         p = lc.head;
-        cout << "|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n";
-        cout << "| No |   Name of Airline          |  From                |  To             |  Day         |  Time   |  Price   |  Name of customer            |  ID         |  Phone       |  Seat |\n";
-        cout << "|==================================================================================================================================================================================|\n";
+        cout << "|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n";
+        cout << "| No |   Name of Airline           |  From                |  To             |  Day         |  Time   |  Price   |  Name of customer            |  ID         |  Phone       |  Seat |\n";
+        cout << "|===================================================================================================================================================================================|\n";
         while (p)
         {
-            cout << "| " << i++ << " ";
+            i < 10 ? cout << "| 0" << i++ << " " : cout << "| " << i++ << " ";
             p->cdata.print();
             p = p->next;
         }
@@ -1044,7 +1062,7 @@ string formatSeat(string s)
 bool checkSeat(string s, int n)
 {
     s = formatSeat(s);
-    if (s[2] == 'E' || s[2] > 'F')
+    if (s[2] == 'E' || s[2] > 'G')
         return false;
     string s1 = to_string(n), s2 = "00";
     if (s1.length() < 2)

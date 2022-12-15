@@ -7,3 +7,5 @@ Vietjet Air,Ho Chi Minh,Malaysia,10,12,2022,7,25,Nguyen Van Anh Tu,225961786,098
 Vietjet Air,Ho Chi Minh,Malaysia,10,12,2022,21,0,Vo Duy Luan,215112039,0920000005,11A
 Vietjet Air,Ho Chi Minh,Malaysia,10,12,2022,21,0,Nguyen Quoc Khanh,225146987,0356981267,08C
 Bamboo Airways,Khanh Hoa,Quang Ninh,10,12,2022,18,0,Duong Cong Nam,225463891,0973642876,02B
+Bamboo Airways,Da Nang,Can Tho,10,12,2022,7,0,Tran Thai Bao ,215789234,0962374193,08A
+Bamboo Airways,Khanh Hoa,Quang Ninh,10,12,2022,18,0,Do Cong Nam,225463721,0971439876,04F

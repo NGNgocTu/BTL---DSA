@@ -83,6 +83,7 @@ void readTrip(listTrip &lt, int &n, listLine ll);
 void printTrip(listTrip lt);
 nodeTicket *createTicket(ticket a);
 void addTicket(listTicket &lc, nodeTicket *p);
+void insertTicket(listTicket &lc, nodeTicket *q, nodeTicket *p);
 void readTicket(listTicket &lc, int &n, listTrip lt);
 void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline la);
 void printTicket(listTicket lc);
@@ -104,12 +105,11 @@ string formatSeat(string s);
 int main()
 {
     // Khai báo biến
-
     listAirline la;
     listLine ll;
     listTrip lt;
     listTicket lc;
-    int nla = 0, nll = 0, nlt = 0, nlc = 0;
+    int nla = 0, nll = 0, nlt = 0, nlc = 0, t;
     // Tạo các danh sách liên kết đôi rỗng
     createEmptyAirline(la);
     createEmptyLine(ll);
@@ -405,6 +405,12 @@ void readTrip(listTrip &lt, int &n, listLine ll)
         f >> t;
         a.setSeatOfRow(t);
         f.get(ch);
+        f >> t;
+        a.setTotalWeight(t);
+        f.get(ch);
+        f >> t;
+        a.setPricePerKilo(t);
+        f.get(ch);
         a.setSeat(a.getSeatOfRow() * 6);
         addTrip(lt, createTrip(a));
         if (f.eof())
@@ -464,6 +470,7 @@ void addTicket(listTicket &lc, nodeTicket *p)
     }
 }
 
+// Thêm một vé vào sau vé bất kì
 void insertTicket(listTicket &lc, nodeTicket *q, nodeTicket *p)
 {
     if (q == lc.tail)
@@ -516,8 +523,14 @@ void readTicket(listTicket &lc, int &n, listTrip lt)
         a.setIdOfClient(s);
         getline(f, s, ',');
         a.setPhone(s);
-        getline(f, s, '\n');
+        getline(f, s, ',');
         a.setSeatOfClient(s);
+        f >> t;
+        a.setWeight(t);
+        f.get(ch);
+        f >> t;
+        a.setPriceOfPackage(t);
+        f.get(ch);
         p = lt.head;
         while (p)
         {
@@ -649,6 +662,8 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
 {
     ticket a;
     string s;
+    char ch;
+    int t;
     nodeTrip *pt;
     nodeTicket *p;
     cout << "Input name: ";
@@ -666,12 +681,29 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
         getline(cin, s);
     } while (s.length() < 10 || s.length() > 10);
     a.setPhone(s);
-    do
+    cout << "Choose you option:\n - 1 - Book a ticket\n - 2 - Ship a package\n";
+    cin >> ch;
+    if (ch == '1')
     {
-        pt = findTrip(lt, ll, la);
-        if (pt->tdata.getSeat() == 0)
-            cout << "The tickets were sold out!!\nPlease choose again\n\n";
-    } while (pt->tdata.getSeat() <= 0);
+        do
+        {
+            pt = findTrip(lt, ll, la);
+            if (pt->tdata.getSeat() == 0)
+                cout << "The tickets were sold out!!\nPlease choose again\n\n";
+        } while (pt->tdata.getSeat() <= 0);
+    }
+    else
+    {
+        cout << "Input weight of package: ";
+        cin >> t;
+        a.setWeight(t);
+        do
+        {
+            pt = findTrip(lt, ll, la);
+            if (pt->tdata.getTotalWeight() < t)
+                cout << "The tickets were sold out!!\nPlease choose again\n\n";
+        } while (pt->tdata.getTotalWeight() < t);
+    }
     a.setId(pt->tdata.getId());
     a.setName(pt->tdata.getName());
     a.setTotal(pt->tdata.getTotalLine());
@@ -686,22 +718,22 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     a.setSeat(pt->tdata.getSeat());
     a.setSeatOfRow(pt->tdata.getSeatOfRow());
     p = createTicket(a);
-    do
-    {
-        cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << pt->tdata.getSeatOfRow() << " seats.\n";
-        cout << "Empty " << p->cdata.getSeat() << " seats.\n";
-        cout << "Example choose is 02C or 10F ...\n";
-        cout << "Choose seat: ";
-        getline(cin, s);
-        cout << "\n";
-        s = formatSeat(s);
-        p->cdata.setSeatOfClient(s);
-    } while (findEmptySeat(lc, p, s) == false || checkSeat(s, pt->tdata.getSeatOfRow()) == false);
+    if (ch == '1')
+        do
+        {
+            cout << "The trip have 6 rows of seat (A,B,C,D,F,G), each row have " << pt->tdata.getSeatOfRow() << " seats.\n";
+            cout << "Empty " << p->cdata.getSeat() << " seats.\n";
+            cout << "Example choose is 02C or 10F ...\n";
+            cout << "Choose seat: ";
+            getline(cin, s);
+            cout << "\n";
+            s = formatSeat(s);
+            p->cdata.setSeatOfClient(s);
+        } while (findEmptySeat(lc, p, s) == false || checkSeat(s, pt->tdata.getSeatOfRow()) == false);
     addTicket(lc, p);
     pt->tdata.setSeat(pt->tdata.getSeat() - 1);
     n++;
 }
-
 // Xuất thông tin vé ra màn hình
 void printTicket(listTicket lc)
 {
@@ -894,7 +926,8 @@ void exportTicket(listTicket lc)
     {
 
         f << p->cdata.getName() << "," << p->cdata.getFrom() << "," << p->cdata.getTo() << "," << p->cdata.getDayFly() << "," << p->cdata.getMonth() << "," << p->cdata.getYear() << ","
-          << p->cdata.getHour() << "," << p->cdata.getMinute() << "," << p->cdata.getNameOfClient() << "," << p->cdata.getIdOfClient() << "," << p->cdata.getPhone() << "," << p->cdata.getSeatOfClient();
+          << p->cdata.getHour() << "," << p->cdata.getMinute() << "," << p->cdata.getNameOfClient() << "," << p->cdata.getIdOfClient() << "," << p->cdata.getPhone() << "," << p->cdata.getSeatOfClient()
+          << "," << p->cdata.getWeight() << "," << p->cdata.getPriceOfPackage();
         p = p->next;
         if (p)
             f << "\n";
@@ -1053,12 +1086,12 @@ string formatSeat(string s)
 {
     if (s.length() < 3)
         s = "0" + s;
-    if (s[2] >= 'a' && s[2] <= 'f')
+    if (s[2] >= 'a' && s[2] <= 'g')
         s[2] -= 32;
     return s;
 }
 
-// Kiểm tra thông tin nhập vào đúng hay không
+// Kiểm tra thông tin ghế nhập vào đúng hay không
 bool checkSeat(string s, int n)
 {
     s = formatSeat(s);

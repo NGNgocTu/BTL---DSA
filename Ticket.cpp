@@ -1,11 +1,13 @@
 #include "Ticket.h"
 
-ticket::ticket(int id, string name, int totalLine, int idLine, int totalTrip, string from, string to, int idTrip, dayFly date, timeFly departureTimeFly, int price, int seat, string nameOfClient, string idOfClient, string phone, string seatOfClient) : trip(id, name, totalLine, idLine, totalTrip, from, to, idTrip, date, departureTimeFly, price, seat)
+ticket::ticket(int id, string name, int totalLine, int idLine, int totalTrip, string from, string to, int idTrip, dayFly date, timeFly departureTimeFly, int price, int seatOfRow, int totalWeight, int pricePerKilo, string nameOfClient, string idOfClient, string phone, string seatOfClient, int weight, int priceOfPackage) : trip(id, name, totalLine, idLine, totalTrip, from, to, idTrip, date, departureTimeFly, price, seatOfRow, totalWeight, pricePerKilo)
 {
     this->nameOfClient = nameOfClient;
     this->seatOfClient = seatOfClient;
     this->idOfClient = idOfClient;
     this->phone = phone;
+    this->priceOfPackage = priceOfPackage;
+    this->weight = weight;
 }
 
 void ticket::print()

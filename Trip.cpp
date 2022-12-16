@@ -46,6 +46,6 @@ void trip::printOfShip()
     cout << setw(6) << this->date.y << "|  ";
     this->departureTimeFly.hour < 10 ? cout << "0" << this->departureTimeFly.hour << ":" : cout << this->departureTimeFly.hour << ":";
     this->departureTimeFly.minute < 10 ? cout << "0" << setw(3) << this->departureTimeFly.minute : cout << setw(4) << this->departureTimeFly.minute;
-    cout << "|  " << setw(18) << totalWeight << "|  " << setw(20) << pricePerKilo;
-    cout << "|--------------------------------------------------------------------------------------------------------------------------------------------|\n";
+    cout << "|  " << setw(18) << totalWeight << "|  " << setw(18) << pricePerKilo << "|\n";
+    cout << "|----------------------------------------------------------------------------------------------------------------------------------------------|\n";
 }

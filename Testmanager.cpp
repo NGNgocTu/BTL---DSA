@@ -734,6 +734,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     pt->tdata.setSeat(pt->tdata.getSeat() - 1);
     n++;
 }
+
 // Xuất thông tin vé ra màn hình
 void printTicket(listTicket lc)
 {

@@ -9,6 +9,6 @@ private:
     string name, id, pass;
 
 public:
-    security(string name = "", string = "", string pass = "");
+    security(string name = "", string id = "", string pass = "");
     ~security();
 };

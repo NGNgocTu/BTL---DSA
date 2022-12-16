@@ -701,7 +701,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
         {
             pt = findTrip(lt, ll, la);
             if (pt->tdata.getTotalWeight() < t)
-                cout << "The tickets were sold out!!\nPlease choose again\n\n";
+                cout << "Is full!!\nPlease choose again\n\n";
         } while (pt->tdata.getTotalWeight() < t);
     }
     a.setId(pt->tdata.getId());
@@ -730,6 +730,17 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
             s = formatSeat(s);
             p->cdata.setSeatOfClient(s);
         } while (findEmptySeat(lc, p, s) == false || checkSeat(s, pt->tdata.getSeatOfRow()) == false);
+    else
+    {
+        int sum = 0;
+        if (p->cdata.getWeight() <= 1)
+            sum = a.getPricePerKilo();
+        else if (p->cdata.getWeight() <= 2)
+            sum = a.getPricePerKilo() * (0.15 * a.getPricePerKilo() + 0.85);
+        else
+            sum = a()
+        // p->cdata.setPriceOfPackage(1);
+    }
     addTicket(lc, p);
     pt->tdata.setSeat(pt->tdata.getSeat() - 1);
     n++;
@@ -947,9 +958,9 @@ void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la)
     pt = findTrip(lt, ll, la);
     i = 1;
     a = lc.head;
-    cout << "|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n";
-    cout << "| No |   Name of Airline          |  From                |  To             |  Day         |  Time   |  Price   |  Name of customer            |  ID         |  Phone       |  Seat |\n";
-    cout << "|==================================================================================================================================================================================|\n";
+    cout << "|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n";
+    cout << "| No |   Name of Airline           |  From                |  To             |  Day         |  Time   |  Price   |  Name of customer            |  ID         |  Phone       |  Seat |\n";
+    cout << "|===================================================================================================================================================================================|\n";
     while (a)
     {
         if (pt->tdata.getName() == a->cdata.getName())

@@ -658,39 +658,6 @@ nodeTrip *findTrip(listTrip lt, listLine ll, listAirline la)
     return pt;
 }
 
-// Tìm thông tin chở hàng
-nodeTrip *chooseShip(listTrip lt)
-{
-    int t, i = 0;
-    nodeTrip *pt = lt.head;
-    cout << "\nChoose Trip: \n\n";
-    cout << "|--------------------------------------------------------------------------------------------------------------------------------------------|\n";
-    cout << "| No |   Name of Airline           |  From                |  To             |  Day         |  Time   | Total weight(kg) | Price per kilogram |\n";
-    cout << "|============================================================================================================================================|\n";
-    while (pt)
-    {
-        if (pt->tdata.getPricePerKilo() != 0)
-        {
-            i + 1 < 10 ? cout << "| 0" << i + 1 << " " : cout << "| " << i + 1 << " ";
-            pt->tdata.printOfShip();
-            i++;
-        }
-        pt = pt->next;
-    }
-    cin >> t;
-    cin.ignore();
-    cout << "\n";
-    t = t - 1;
-    i = 0;
-    pt = lt.head;
-    while (i < t)
-    {
-        pt = pt->next;
-        i++;
-    }
-    return pt;
-}
-
 // Nhập thông tin vé từ bàn phím
 void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline la)
 {
@@ -731,15 +698,12 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
         cout << "Input weight of package: ";
         cin >> t;
         a.setWeight(t);
-        pt = chooseShip(lt);
-        // do
-        // {
-        //     pt = findTrip(lt, ll, la);
-        //     if (pt->tdata.getPricePerKilo() == 0)
-        //         cout << "The trip is not support ship package!!\nPlease choose again\n\n";
-        //     else if (pt->tdata.getTotalWeight() < t)
-        //         cout << "Is full!!\nPlease choose again\n\n";
-        // } while (pt->tdata.getTotalWeight() < t);
+        do
+        {
+            pt = findTrip(lt, ll, la);
+            if (pt->tdata.getTotalWeight() < t)
+                cout << "Is full!!\nPlease choose again\n\n";
+        } while (pt->tdata.getTotalWeight() < t);
     }
     a.setId(pt->tdata.getId());
     a.setName(pt->tdata.getName());
@@ -773,10 +737,10 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
         if (p->cdata.getWeight() <= 1)
             sum = a.getPricePerKilo();
         else if (p->cdata.getWeight() <= 2)
-            sum = a.getPricePerKilo() * (0.15 * a.getWeight() + 0.85);
-        else
-            sum = a.getPricePerKilo() * (1.05 + 0.1 * a.getWeight());
-        p->cdata.setPriceOfPackage(sum);
+            sum = a.getPricePerKilo() * (0.15 * a.getPricePerKilo() + 0.85);
+        // else
+        //     sum = a()
+        // p->cdata.setPriceOfPackage(1);
     }
     addTicket(lc, p);
     pt->tdata.setSeat(pt->tdata.getSeat() - 1);
@@ -1003,7 +967,7 @@ void printTicketOfTrip(listTicket lc, listTrip lt, listLine ll, listAirline la)
         if (pt->tdata.getName() == a->cdata.getName())
             if (pt->tdata.getFrom() == a->cdata.getFrom() && pt->tdata.getTo() == a->cdata.getTo())
             {
-                i < 10 ? cout << "| 0" << i++ << " " : cout << "| " << i++ << " ";
+                cout << "| " << i++ << " ";
                 a->cdata.print();
                 flag = true;
             }

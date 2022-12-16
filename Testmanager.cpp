@@ -737,8 +737,8 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
             sum = a.getPricePerKilo();
         else if (p->cdata.getWeight() <= 2)
             sum = a.getPricePerKilo() * (0.15 * a.getPricePerKilo() + 0.85);
-        else
-            sum = a()
+        // else
+        //     sum = a()
         // p->cdata.setPriceOfPackage(1);
     }
     addTicket(lc, p);

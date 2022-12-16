@@ -1,5 +1,6 @@
 #pragma once
 #include "Lines.h"
+#include <iomanip>
 
 dayFly date1;
 timeFly time1;
@@ -36,4 +37,5 @@ public:
     int getMinute() const { return this->departureTimeFly.minute; }
     virtual void print();
     void printOfTrip();
+    void printOfShip();
 };

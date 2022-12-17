@@ -906,13 +906,28 @@ void editTicket(listTicket &lc, string id, listTrip &lt)
     else
         do
         {
-            cout << "\nSelect the information you want to edit ";
-            cout << "\n1. Name";
-            cout << "\n2. ID";
-            cout << "\n3. Phone number";
-            cout << "\n4. Seat";
-            cout << "\n5. Exit edit\n";
-            cin >> choose;
+            if (p->cdata.getWeight() == 0)
+            {
+                cout << "\nSelect the information you want to edit ";
+                cout << "\n1. Name";
+                cout << "\n2. ID";
+                cout << "\n3. Phone number";
+                cout << "\n4. Seat";
+                cout << "\n5. Exit edit\n";
+                cin >> choose;
+            }
+            else
+            {
+                cout << "\nSelect the information you want to edit ";
+                cout << "\n1. Name";
+                cout << "\n2. ID";
+                cout << "\n3. Phone number";
+                cout << "\n5. Exit edit\n";
+                cin >> choose;
+                if (choose == 4)
+                    choose = 0;
+            }
+
             switch (choose)
             {
             case 1:

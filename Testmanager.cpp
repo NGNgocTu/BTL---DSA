@@ -922,10 +922,10 @@ void editTicket(listTicket &lc, string id, listTrip &lt)
                 cout << "\n1. Name";
                 cout << "\n2. ID";
                 cout << "\n3. Phone number";
-                cout << "\n5. Exit edit\n";
+                cout << "\n4. Exit edit\n";
                 cin >> choose;
                 if (choose == 4)
-                    choose = 0;
+                    choose = 5;
             }
 
             switch (choose)

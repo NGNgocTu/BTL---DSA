@@ -10,3 +10,4 @@ Bamboo Airways,Khanh Hoa,Quang Ninh,10,12,2022,18,0,Duong Cong Nam,225463891,097
 Bamboo Airways,Da Nang,Can Tho,10,12,2022,7,0,Tran Thai Bao ,215789234,0962374193,08A,0,0
 Bamboo Airways,Khanh Hoa,Quang Ninh,10,12,2022,18,0,Do Cong Nam,225463721,0971439876,04F,0,0
 Bamboo Airways,Binh Dinh,Dong Nai,10,12,2022,19,15,Le Khanh,225397146,0356971349,01G,0,0
+Bamboo Airways,Da Nang,Can Tho,10,12,2022,14,0,Mai Quoc Khanh,215369874,0353698124,,30,336150

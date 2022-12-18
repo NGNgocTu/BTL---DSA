@@ -5,14 +5,12 @@ Vietnam Airlines,Ha Noi,Myanmar,10,12,2022,16,0,Tran Kim Phat,225923467,09909786
 Bamboo Airways,Da Nang,Can Tho,10,12,2022,7,0,Tran Thai Bao ,215789234,0962374193,08A,0,0
 Bamboo Airways,Khanh Hoa,Quang Ninh,10,12,2022,18,0,Do Cong Nam,225463721,0971439876,04F,0,0
 Vietnam Airlines,Ha Noi,Khanh Hoa,10,12,2022,16,0,Nguyen Khanh Hoa,225678951,0896742895,08A,0,0
+Bamboo Airways,Da Nang,Can Tho,10,12,2022,14,0,Mai Quoc Bao,225342921,0353618124,,30,336150
 Vietjet Air,Ho Chi Minh,Malaysia,10,12,2022,7,25,Nguyen Van Anh Tu,225961786,0982785309,08C,0,0
 Vietjet Air,Ho Chi Minh,Malaysia,10,12,2022,21,0,Vo Duy Luan,215112039,0920000005,11A,0,0
 Vietjet Air,Ho Chi Minh,Malaysia,10,12,2022,21,0,Nguyen Quoc Khanh,225146987,0356981267,08C,0,0
 Bamboo Airways,Khanh Hoa,Quang Ninh,10,12,2022,18,0,Duong Cong Nam,225463891,0973642876,02B,0,0
 Bamboo Airways,Binh Dinh,Dong Nai,10,12,2022,19,15,Le Khanh,225397146,0356971349,01G,0,0
-<<<<<<< HEAD
 Bamboo Airways,Da Nang,Can Tho,10,12,2022,14,0,Mai Quoc Khanh,225346921,0353698124,,30,336150
-=======
-Bamboo Airways,Da Nang,Can Tho,10,12,2022,14,0,Vu Quang Huy,225346921,0353698124,,30,336150
->>>>>>> 9ee8a07 (Update)
 Bamboo Airways,Da Nang,Can Tho,10,12,2022,7,0,ads asd,225923464,0982785301,02D,0,0
+Bamboo Airways,Da Nang,Can Tho,10,12,2022,14,0,Vu Quang Huy,225346921,0353698127,,30,336150

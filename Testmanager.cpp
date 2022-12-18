@@ -1659,7 +1659,7 @@ void managament(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
         getline(cin, s2);
         if (s1 == s2)
         {
-            cout << "Welcome managament!!\n";
+            cout << "\n\nWelcome managament!!\n\n";
             system("pause");
             break;
         }
@@ -1722,6 +1722,9 @@ void managament(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
             }
             else if (t == 3)
             {
+                cout << "The list of staffs:\n";
+                printStaff(l);
+                cout << "===--------------===\n";
                 cout << "Enter staff id will edit: ";
                 getline(cin, s1);
                 if (searchStaff(l, s1) != NULL)
@@ -1732,6 +1735,7 @@ void managament(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
                         cout << "1. Name\n";
                         cout << "2. Password\n";
                         cout << "3. Exit\n";
+                        cout << "Enter your choose: ";
                         t = checkInput(3);
                         cin.ignore();
                         if (t == 1)
@@ -1757,9 +1761,13 @@ void managament(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
                 }
                 else
                     cout << "Not found!!\n";
+                system("pause");
             }
             else if (t == 4)
             {
+                cout << "The list of staffs:\n";
+                printStaff(l);
+                cout << "===--------------===\n";
                 cout << "Enter staff id will delete: ";
                 getline(cin, s1);
                 if (searchStaff(l, s1) != NULL)
@@ -1804,7 +1812,7 @@ void staff(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
         getline(cin, s);
         if (checkStaff(l, s) != NULL)
         {
-            cout << "Hello " << checkStaff(l, s)->data.sName << "\n";
+            cout << "\n\nHello " << checkStaff(l, s)->data.sName << "\n\n";
             system("pause");
             break;
         }
@@ -1844,7 +1852,7 @@ void staff(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
 
 void customer(listTicket &lc)
 {
-    cout << "\nEnter id to find: ";
+    cout << "\nEnter id book ticket/ship to find: ";
     cin.ignore();
     string id;
     getline(cin, id);

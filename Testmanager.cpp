@@ -67,6 +67,24 @@ struct listTicket
     nodeTicket *tail;
 };
 
+struct Staff
+{
+    string sName, sId, sPass;
+};
+
+struct nodeStaff
+{
+    Staff data;
+    nodeStaff *next;
+    nodeStaff *prev;
+};
+
+struct listStaff
+{
+    nodeStaff *head;
+    nodeStaff *tail;
+};
+
 void createEmptyAirline(listAirline &l);
 void createEmptyLine(listLine &l);
 void createEmptyTrip(listTrip &l);
@@ -113,6 +131,22 @@ bool checkName(string s);
 bool checkID(listTicket &lc, string s);
 bool checkPhone(listTicket &lc, string s);
 string formatName(string s);
+void createEmptyStaff(listStaff &l);
+nodeStaff *createStaff(Staff a);
+void addStaff(listStaff &lc, nodeStaff *p);
+void readStaff(listStaff &l);
+void printStaff(listStaff &l);
+nodeStaff *searchStaff(listStaff &l, string id);
+void delBeforeStaff(listStaff &lc);
+void delAfterStaff(listStaff &lc);
+bool delStaff(listStaff &lc, string id);
+void inputStaff(listStaff &l);
+void managament(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc);
+void staff(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc);
+void customer(listTicket &lc);
+nodeStaff *checkStaff(listStaff &l, string pass);
+void exportStaff(listStaff &l);
+void delAllStaff(listStaff &lc);
 
 // Chương trình chính
 int main()
@@ -122,7 +156,8 @@ int main()
     listLine ll;
     listTrip lt;
     listTicket lc;
-    int nla = 0, nll = 0, nlt = 0, nlc = 0, t;
+    int t;
+    int nla = 0, nll = 0, nlt = 0, nlc = 0;
     // Tạo các danh sách liên kết đôi rỗng
     createEmptyAirline(la);
     createEmptyLine(ll);
@@ -134,7 +169,19 @@ int main()
     readTrip(lt, nlt, ll);
     readTicket(lc, nlc, lt);
     // Bắt đầu điều hướng chương trình
-    menu(la, ll, lt, lc);
+    system("cls");
+    cout << "Choose option to log-in\n";
+    cout << "1. Managament\n";
+    cout << "2. Staff\n";
+    cout << "3. Customer\n";
+    cout << "Enter your choose: ";
+    t = checkInput(3);
+    if (t == 1)
+        managament(la, ll, lt, lc);
+    else if (t == 2)
+        staff(la, ll, lt, lc);
+    else
+        customer(lc);
     return 0;
 }
 
@@ -1446,4 +1493,424 @@ string formatName(string s)
     while (s.find("  ") < s.length())
         s = s.erase(s.find("  "), 1);
     return s;
+}
+
+void createEmptyStaff(listStaff &l)
+{
+    l.head = l.tail = NULL;
+}
+
+nodeStaff *createStaff(Staff a)
+{
+    nodeStaff *p;
+    p = new nodeStaff;
+    if (p == NULL)
+        exit(1);
+    p->data = a;
+    p->next = NULL;
+    p->prev = NULL;
+    return p;
+}
+
+void addStaff(listStaff &lc, nodeStaff *p)
+{
+    if (lc.head == NULL)
+    {
+        lc.head = p;
+        lc.tail = lc.head;
+    }
+    else
+    {
+        lc.tail->next = p;
+        p->prev = lc.tail;
+        lc.tail = p;
+    }
+}
+
+void readStaff(listStaff &l)
+{
+    string s;
+    Staff a;
+    ifstream f("Staff.txt");
+    while (!f.eof())
+    {
+        getline(f, s, ',');
+        a.sName = s;
+        getline(f, s, ',');
+        a.sId = s;
+        getline(f, s, '\n');
+        a.sPass = s;
+        addStaff(l, createStaff(a));
+        if (f.eof())
+            break;
+    }
+    f.close();
+}
+
+void printStaff(listStaff &l)
+{
+    nodeStaff *p = l.head;
+    if (l.head == NULL)
+        cout << "Empty staff\n";
+    else
+        while (p)
+        {
+            cout << setw(15) << left << p->data.sId << setw(30) << p->data.sName << "\n";
+            p = p->next;
+        }
+}
+
+nodeStaff *searchStaff(listStaff &l, string id)
+{
+    nodeStaff *p = l.head;
+    if (l.head == NULL)
+        cout << "Empty staff\n";
+    else
+        while (p)
+        {
+            if (p->data.sId == id)
+                return p;
+            p = p->next;
+        }
+    return NULL;
+}
+
+void delBeforeStaff(listStaff &lc)
+{
+    if (lc.head == NULL)
+    {
+        return;
+    }
+    else
+    {
+        nodeStaff *p = lc.head;
+        lc.head = lc.head->next;
+        lc.head->prev = NULL;
+        delete p;
+    }
+}
+
+void delAfterStaff(listStaff &lc)
+{
+    if (lc.head == NULL)
+    {
+        return;
+    }
+    else
+    {
+        nodeStaff *p = lc.tail;
+        lc.tail = lc.tail->prev;
+        lc.tail->next = NULL;
+        delete p;
+    }
+}
+
+bool delStaff(listStaff &lc, string id)
+{
+    bool flag = false;
+    nodeStaff *p = searchStaff(lc, id);
+    if (p != NULL)
+    {
+        flag = true;
+        if (p->prev == NULL)
+        {
+            delBeforeStaff(lc);
+            return flag;
+        }
+        if (p->next == NULL)
+        {
+            delAfterStaff(lc);
+            return flag;
+        }
+        p->prev->next = p->next;
+        p->next->prev = p->prev;
+        p->prev = NULL;
+        p->next = NULL;
+        delete p;
+    }
+    return flag;
+}
+
+void inputStaff(listStaff &l)
+{
+    Staff a;
+    cout << "Enter name: ";
+    getline(cin, a.sName);
+    cout << "Enter id: ";
+    getline(cin, a.sId);
+    cout << "Enter Pass: ";
+    getline(cin, a.sPass);
+    addStaff(l, createStaff(a));
+}
+
+void managament(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
+{
+    ifstream f("Managament.txt");
+    string s1, s2;
+    int t = 0;
+    getline(f, s1);
+    listStaff l;
+    createEmptyStaff(l);
+    readStaff(l);
+    cin.ignore();
+    do
+    {
+        cout << "Input your password here: ";
+        getline(cin, s2);
+        if (s1 == s2)
+        {
+            cout << "Welcome managament!!\n";
+            system("pause");
+            break;
+        }
+
+        else
+            t++;
+        if (t == 3)
+            cout << "Error!!\n";
+    } while (t < 3);
+    if (t < 3)
+    {
+        system("cls");
+        do
+        {
+            system("cls");
+            cout << "1. Change password\n";
+            cout << "2. Add staff\n";
+            cout << "3. Edit staff\n";
+            cout << "4. Delete staff\n";
+            cout << "5. Print list of staff\n";
+            cout << "6. Log-in as staff\n";
+            cout << "7. Exit\n";
+            cout << "Enter your choose: ";
+            t = checkInput(7);
+            cin.ignore();
+            if (t == 1)
+            {
+                system("cls");
+                cout << "Input new password here: ";
+                getline(cin, s1);
+                cout << "\n\nSave change!!\n";
+                system("pause");
+                ofstream f("Managament.txt");
+                f << s1;
+                f.close();
+            }
+            else if (t == 2)
+            {
+                system("cls");
+                Staff a;
+                cout << "Add new staff:\n";
+                {
+                    do
+                    {
+                        cout << "Enter name: ";
+                        getline(cin, a.sName);
+                        a.sName = formatName(a.sName);
+                    } while (checkName(a.sName) == false);
+                }
+                cout << "Enter id: ";
+                getline(cin, a.sId);
+                cout << "Enter pass: ";
+                getline(cin, a.sPass);
+                cout << "Save change!!";
+                system("pause");
+                addStaff(l, createStaff(a));
+                exportStaff(l);
+                delAllStaff(l);
+                readStaff(l);
+            }
+            else if (t == 3)
+            {
+                cout << "Enter staff id will edit: ";
+                getline(cin, s1);
+                if (searchStaff(l, s1) != NULL)
+                {
+                    nodeStaff *p = searchStaff(l, s1);
+                    do
+                    {
+                        cout << "1. Name\n";
+                        cout << "2. Password\n";
+                        cout << "3. Exit\n";
+                        t = checkInput(3);
+                        cin.ignore();
+                        if (t == 1)
+                        {
+                            do
+                            {
+                                cout << "Enter name: ";
+                                getline(cin, p->data.sName);
+                                p->data.sName = formatName(p->data.sName);
+                            } while (checkName(p->data.sName) == false);
+                            cout << "Save change!!\n";
+                            system("pause");
+                        }
+                        else if (t == 2)
+                        {
+                            cout << "Enter password: ";
+                            getline(cin, p->data.sPass);
+                        }
+                        else
+                            break;
+
+                    } while (true);
+                }
+                else
+                    cout << "Not found!!\n";
+            }
+            else if (t == 4)
+            {
+                cout << "Enter staff id will delete: ";
+                getline(cin, s1);
+                if (searchStaff(l, s1) != NULL)
+                {
+                    delStaff(l, s1);
+                    cout << "save change!!\n";
+                }
+                else
+                    cout << "Not found!!\n";
+                system("pause");
+                exportStaff(l);
+                delAllStaff(l);
+                readStaff(l);
+            }
+            else if (t == 5)
+            {
+                printStaff(l);
+                system("pause");
+            }
+            else if (t == 6)
+            {
+                menu(la, ll, lt, lc);
+            }
+            else if (t == 7)
+                break;
+        } while (true);
+    }
+}
+
+void staff(listAirline &la, listLine &ll, listTrip &lt, listTicket &lc)
+{
+    listStaff l;
+    string s;
+    nodeStaff *p;
+    int t = 0;
+    createEmptyStaff(l);
+    readStaff(l);
+    cin.ignore();
+    do
+    {
+        cout << "Input your password here: ";
+        getline(cin, s);
+        if (checkStaff(l, s) != NULL)
+        {
+            cout << "Hello " << checkStaff(l, s)->data.sName << "\n";
+            system("pause");
+            break;
+        }
+
+        else
+            t++;
+        if (t == 3)
+            cout << "Error!!\n";
+    } while (t < 3);
+    if (t < 3)
+    {
+        p = checkStaff(l, s);
+        do
+        {
+            system("cls");
+            cout << "1. Change password\n";
+            cout << "2. Start work\n";
+            cout << "3. Exit\n";
+            cout << "Enter your choose: ";
+            t = checkInput(3);
+            cin.ignore();
+            if (t == 1)
+            {
+                cout << "Input new password here: ";
+                getline(cin, p->data.sPass);
+                cout << "\n\nSave change!!\n";
+                system("pause");
+                exportStaff(l);
+            }
+            else if (t == 2)
+                menu(la, ll, lt, lc);
+            else
+                break;
+        } while (true);
+    }
+}
+
+void customer(listTicket &lc)
+{
+    cout << "\nEnter id to find: ";
+    cin.ignore();
+    string id;
+    getline(cin, id);
+    nodeTicket *p = search(lc, id);
+    if (p != NULL)
+    {
+        if (p->cdata.getSeatOfClient() != "")
+        {
+            cout << "|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n";
+            cout << "| No |   Name of Airline           |  From                |  To             |  Day         |  Time   |  Price   |  Name of customer            |  ID         |  Phone       |  Seat |\n";
+            cout << "|===================================================================================================================================================================================|\n";
+            cout << "| 01 ";
+            p->cdata.print();
+        }
+        if (p->cdata.getWeight() != 0)
+        {
+            cout << "|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\n";
+            cout << "| No |   Name of Airline           |  From                |  To             |  Day         |  Time   |  Price   |  Name of customer            |  ID         |  Phone       |  weight(kg)  |  Price          |\n";
+            cout << "|============================================================================================================================================================================================================|\n";
+            cout << "| 01 ";
+            p->cdata.printTicketOfShip();
+        }
+    }
+    else
+        cout << "Not Found!!";
+    cout << "\n";
+    system("pause");
+}
+
+nodeStaff *checkStaff(listStaff &l, string pass)
+{
+    nodeStaff *p = l.head;
+    if (l.head == NULL)
+        cout << "Empty staff\n";
+    else
+        while (p)
+        {
+            if (p->data.sPass == pass)
+                return p;
+            p = p->next;
+        }
+    return NULL;
+}
+
+void exportStaff(listStaff &l)
+{
+    ofstream f("Staff.txt");
+    nodeStaff *p = l.head;
+    while (p)
+    {
+        f << p->data.sName << "," << p->data.sId << "," << p->data.sPass;
+        p = p->next;
+        if (p != NULL)
+            f << "\n";
+    }
+    f.close();
+}
+
+void delAllStaff(listStaff &lc)
+{
+    nodeStaff *k = new nodeStaff;
+    while (lc.head != NULL)
+    {
+        k = lc.head;
+        lc.head = lc.head->next;
+        delete k;
+    }
+    createEmptyStaff(lc);
 }

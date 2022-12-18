@@ -908,22 +908,27 @@ void editTicket(listTicket &lc, string id, listTrip &lt)
         {
             if (p->cdata.getWeight() == 0)
             {
-                cout << "\nSelect the information you want to edit ";
                 cout << "\n1. Name";
                 cout << "\n2. ID";
                 cout << "\n3. Phone number";
                 cout << "\n4. Seat";
                 cout << "\n5. Exit edit\n";
+                cout << "\nSelect the information you want to edit: ";
                 cin >> choose;
+                cout << "\n_______________________________________\n ";
+                cout << "\n";
             }
             else
             {
-                cout << "\nSelect the information you want to edit ";
+                // cout << "\nSelect the information you want to edit ";
                 cout << "\n1. Name";
                 cout << "\n2. ID";
                 cout << "\n3. Phone number";
                 cout << "\n4. Exit edit\n";
+                cout << "\nSelect the information you want to edit: ";
                 cin >> choose;
+                cout << "\n_______________________________________\n ";
+                cout << "\n";
                 if (choose == 4)
                     choose = 5;
             }
@@ -931,20 +936,22 @@ void editTicket(listTicket &lc, string id, listTrip &lt)
             switch (choose)
             {
             case 1:
-                cout << p->cdata.getNameOfClient() << endl;
+                cout << "Name of customer: " << p->cdata.getNameOfClient() << endl;
                 do
                 {
-                    cout << "Input name: ";
+                    cout << "Input the name to change: ";
+                    cin.ignore();
                     getline(cin, s);
                     s = formatName(s);
                 } while (checkName(s) == false);
                 p->cdata.setNameOfClient(s);
                 break;
             case 2:
-                cout << p->cdata.getIdOfClient() << endl;
+                cout << "ID of customer: " << p->cdata.getIdOfClient() << endl;
                 do
                 {
                     cout << "Input id (has 9 digits): ";
+                    cin.ignore();
                     getline(cin, s);
                 } while (s.length() < 9 || s.length() > 9 || checkNum(s) == false || checkID(lc, s) == false);
                 p->cdata.setIdOfClient(s);
@@ -953,13 +960,15 @@ void editTicket(listTicket &lc, string id, listTrip &lt)
                 cout << p->cdata.getPhone() << endl;
                 do
                 {
-                    cout << "Input phone (has 10 digits): ";
+                    cout << "Phone number of customer: "
+                         << "Input phone (has 10 digits): ";
+                    cin.ignore();
                     getline(cin, s);
                 } while (s.length() < 10 || s.length() > 10 || checkNum(s) == false || checkPhone(lc, s) == false);
                 p->cdata.setPhone(s);
                 break;
             case 4:
-                cout << p->cdata.getSeatOfClient() << endl;
+                cout << "The seat of customer: " << p->cdata.getSeatOfClient() << endl;
                 nodeTrip *pt;
                 pt = lt.head;
                 while (pt)
@@ -1371,11 +1380,18 @@ int checkInput(int t)
 // Kiểm tra tên
 bool checkName(string s)
 {
+    int t = 0;
     for (int i = 0; i < s.length(); i++)
         if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] < 'Z') || s[i] == ' ')
-            continue;
+        {
+            // continue;
+            if (s[i] == ' ')
+                t++;
+        }
         else
             return false;
+    if (t == 0)
+        return false;
     return true;
 }
 

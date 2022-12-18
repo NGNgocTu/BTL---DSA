@@ -675,7 +675,7 @@ nodeTrip *chooseShip(listTrip lt)
 {
     int t, i = 0;
     nodeTrip *pt = lt.head;
-    cout << "\nChoose Trip: \n\n";
+    cout << "\nPlease, choose trip: \n\n";
     cout << "|----------------------------------------------------------------------------------------------------------------------------------------------|\n";
     cout << "| No |   Name of Airline           |  From                |  To             |  Day         |  Time   |  Total weight(kg)  | Price per kilogram |\n";
     cout << "|==============================================================================================================================================|\n";
@@ -689,6 +689,7 @@ nodeTrip *chooseShip(listTrip lt)
         }
         pt = pt->next;
     }
+    cout << "Number of the choose: ";
     t = checkInput(i);
     cin.ignore();
     cout << "\n";
@@ -735,6 +736,7 @@ void inputTicket(listTicket &lc, int &n, listTrip lt, listLine ll, listAirline l
     } while (s.length() < 10 || s.length() > 10 || checkNum(s) == false || checkPhone(lc, s) == false);
     a.setPhone(s);
     cout << "Choose you option:\n - 1 - Book a ticket\n - 2 - Ship a package\n";
+    cout << " Enter the choose: ";
     ch = checkInput(2);
     if (ch == 1)
     {
